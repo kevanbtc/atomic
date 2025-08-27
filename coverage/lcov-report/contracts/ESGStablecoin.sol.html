@@ -1,0 +1,1622 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/ESGStablecoin.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> ESGStablecoin.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/108</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/120</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/29</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/151</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+&nbsp;
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+&nbsp;
+/**
+ * @title ESGStablecoin
+ * @dev ESG-backed stablecoin with multi-collateral support
+ * @notice Stablecoin backed by carbon credits, water credits, and other ESG assets
+ */
+contract ESGStablecoin is ERC20, ERC20Burnable, ReentrancyGuard, Pausable, Ownable {
+    using Math for uint256;
+&nbsp;
+    // Collateral types
+    enum CollateralType {
+        CarbonCredits,
+        WaterCredits,
+        RenewableEnergy,
+        GreenBonds,
+        ESGTokens
+    }
+&nbsp;
+    // Collateral asset structure
+    struct CollateralAsset {
+        address tokenAddress;
+        CollateralType collateralType;
+        uint256 collateralRatio; // Collateral ratio in basis points (e.g., 15000 = 150%)
+        uint256 liquidationThreshold; // Liquidation threshold in basis points (e.g., 12000 = 120%)
+        uint256 totalDeposited;
+        uint256 totalBorrowed; // Amount of stablecoin borrowed against this collateral
+        bool isActive;
+        address priceOracle;
+        uint256 lastPriceUpdate;
+    }
+&nbsp;
+    // User position structure
+    struct Position {
+        uint256 collateralAmount;
+        uint256 borrowedAmount;
+        uint256 lastUpdate;
+        bool isActive;
+    }
+&nbsp;
+    // Liquidation data
+    struct LiquidationData {
+        address user;
+        address collateralAsset;
+        uint256 collateralAmount;
+        uint256 debtAmount;
+        uint256 liquidationPrice;
+        uint256 timestamp;
+    }
+&nbsp;
+    // State variables
+    uint256 public constant TARGET_PRICE = 1e18; // $1.00 target price
+    uint256 public stabilityFeeRate = 300; // 3% annual stability fee
+    uint256 public liquidationPenalty = 1300; // 13% liquidation penalty
+    uint256 public minimumCollateralRatio = 11000; // 110% minimum collateral ratio
+    
+    // ESG scoring
+    uint256 public constant ESG_SCORE_MULTIPLIER = 10000;
+    mapping(address =&gt; uint256) public userESGScore; // ESG score out of 10000
+    mapping(CollateralType =&gt; uint256) public typeESGWeight; // ESG weight by type
+    
+    // Treasury and fees
+    address public treasury;
+    address public emergencyOracle;
+    uint256 public totalProtocolFees;
+    uint256 public lastFeeCollection;
+    
+    // Collateral management
+    address[] public collateralAssets;
+    mapping(address =&gt; CollateralAsset) public collaterals;
+    mapping(address =&gt; mapping(address =&gt; Position)) public positions; // user -&gt; collateral -&gt; position
+    mapping(address =&gt; uint256) public totalUserDebt; // user -&gt; total debt across all collaterals
+    
+    // Price stability
+    uint256 public currentPrice = TARGET_PRICE;
+    uint256 public lastPriceUpdate;
+    uint256 public priceUpdateFrequency = 1 hours;
+    
+    // Liquidation tracking
+    LiquidationData[] public liquidationHistory;
+    mapping(address =&gt; uint256[]) public userLiquidations;
+&nbsp;
+    // Events
+    event CollateralDeposited(address indexed user, address indexed collateralAsset, uint256 amount);
+    event CollateralWithdrawn(address indexed user, address indexed collateralAsset, uint256 amount);
+    event StablecoinMinted(address indexed user, address indexed collateralAsset, uint256 amount);
+    event StablecoinBurned(address indexed user, address indexed collateralAsset, uint256 amount);
+    event CollateralAdded(address indexed asset, CollateralType collateralType, uint256 collateralRatio);
+    event CollateralUpdated(address indexed asset, uint256 newCollateralRatio, uint256 newLiquidationThreshold);
+    event Liquidation(address indexed user, address indexed collateralAsset, uint256 collateralLiquidated, uint256 debtRepaid);
+    event PriceUpdated(uint256 newPrice, uint256 timestamp);
+    event ESGScoreUpdated(address indexed user, uint256 newScore);
+    event StabilityFeeCollected(address indexed user, uint256 feeAmount);
+&nbsp;
+    // Modifiers
+<span class="fstat-no" title="function not covered" >    modifier validCollateral(address asset) {</span>
+<span class="cstat-no" title="statement not covered" >        require(collaterals[asset].isActive, "ESGStablecoin: Invalid or inactive collateral")</span>;
+        _;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    modifier onlyEmergencyOracle() {</span>
+<span class="cstat-no" title="statement not covered" >        require(msg.sender == emergencyOracle, "ESGStablecoin: Only emergency oracle")</span>;
+        _;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    constructor(</span>
+        string memory name,
+        string memory symbol,
+        address _treasury,
+        address _emergencyOracle
+    ) ERC20(name, symbol) Ownable(msg.sender) {
+<span class="cstat-no" title="statement not covered" >        require(_treasury != address(0), "ESGStablecoin: Invalid treasury")</span>;
+<span class="cstat-no" title="statement not covered" >        require(_emergencyOracle != address(0), "ESGStablecoin: Invalid emergency oracle")</span>;
+        
+        treasury = _treasury;
+        emergencyOracle = _emergencyOracle;
+        lastFeeCollection = block.timestamp;
+        lastPriceUpdate = block.timestamp;
+&nbsp;
+        // Initialize ESG weights for different collateral types
+        typeESGWeight[CollateralType.CarbonCredits] = 3000; // 30%
+        typeESGWeight[CollateralType.WaterCredits] = 2500;  // 25%
+        typeESGWeight[CollateralType.RenewableEnergy] = 2000; // 20%
+        typeESGWeight[CollateralType.GreenBonds] = 1500;   // 15%
+        typeESGWeight[CollateralType.ESGTokens] = 1000;    // 10%
+    }
+&nbsp;
+    /**
+     * @dev Add a new collateral asset
+     * @param asset Address of the collateral token
+     * @param collateralType Type of collateral
+     * @param collateralRatio Required collateral ratio in basis points
+     * @param liquidationThreshold Liquidation threshold in basis points
+     * @param priceOracle Oracle address for price feeds
+     */
+<span class="fstat-no" title="function not covered" >    function addCollateral(</span>
+        address asset,
+        CollateralType collateralType,
+        uint256 collateralRatio,
+        uint256 liquidationThreshold,
+        address priceOracle
+    ) external onlyOwner {
+<span class="cstat-no" title="statement not covered" >        require(asset != address(0), "ESGStablecoin: Invalid asset address")</span>;
+<span class="cstat-no" title="statement not covered" >        require(priceOracle != address(0), "ESGStablecoin: Invalid oracle address")</span>;
+<span class="cstat-no" title="statement not covered" >        require(collateralRatio &gt;= minimumCollateralRatio, "ESGStablecoin: Ratio too low")</span>;
+<span class="cstat-no" title="statement not covered" >        require(liquidationThreshold &lt; collateralRatio, "ESGStablecoin: Invalid liquidation threshold")</span>;
+<span class="cstat-no" title="statement not covered" >        require(!collaterals[asset].isActive, "ESGStablecoin: Collateral already exists")</span>;
+&nbsp;
+        collaterals[asset] = CollateralAsset({
+            tokenAddress: asset,
+            collateralType: collateralType,
+            collateralRatio: collateralRatio,
+            liquidationThreshold: liquidationThreshold,
+            totalDeposited: 0,
+            totalBorrowed: 0,
+            isActive: true,
+            priceOracle: priceOracle,
+            lastPriceUpdate: block.timestamp
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        collateralAssets.push(asset)</span>;
+<span class="cstat-no" title="statement not covered" >        emit CollateralAdded(asset, collateralType, collateralRatio);</span>
+    }
+&nbsp;
+    /**
+     * @dev Deposit collateral to back stablecoin minting
+     * @param collateralAsset Address of the collateral asset
+     * @param amount Amount of collateral to deposit
+     */
+<span class="fstat-no" title="function not covered" >    function depositCollateral(address collateralAsset, uint256 amount) </span>
+        external 
+        validCollateral(collateralAsset)
+        nonReentrant 
+        whenNotPaused 
+    {
+<span class="cstat-no" title="statement not covered" >        require(amount &gt; 0, "ESGStablecoin: Amount must be positive")</span>;
+        
+<span class="cstat-no" title="statement not covered" >        IERC20(collateralAsset).transferFrom(msg.sender, address(this), amount)</span>;
+        
+<span class="cstat-no" title="statement not covered" >        Position storage position = positions[msg.sender][collateralAsset];</span>
+        position.collateralAmount += amount;
+        position.lastUpdate = block.timestamp;
+        position.isActive = true;
+        
+        collaterals[collateralAsset].totalDeposited += amount;
+        
+        // Update user's ESG score based on collateral type
+<span class="cstat-no" title="statement not covered" >        _updateESGScore(msg.sender, collateralAsset, amount, true)</span>;
+        
+<span class="cstat-no" title="statement not covered" >        emit CollateralDeposited(msg.sender, collateralAsset, amount);</span>
+    }
+&nbsp;
+    /**
+     * @dev Mint stablecoin against deposited collateral
+     * @param collateralAsset Address of the collateral asset
+     * @param amount Amount of stablecoin to mint
+     */
+<span class="fstat-no" title="function not covered" >    function mintStablecoin(address collateralAsset, uint256 amount) </span>
+        external 
+        validCollateral(collateralAsset)
+        nonReentrant 
+        whenNotPaused 
+    {
+<span class="cstat-no" title="statement not covered" >        require(amount &gt; 0, "ESGStablecoin: Amount must be positive")</span>;
+        
+<span class="cstat-no" title="statement not covered" >        Position storage position = positions[msg.sender][collateralAsset];</span>
+<span class="cstat-no" title="statement not covered" >        require(position.isActive &amp;&amp; position.collateralAmount &gt; 0, "ESGStablecoin: No collateral deposited")</span>;
+        
+<span class="cstat-no" title="statement not covered" >        uint256 maxMintable = _getMaxMintable(msg.sender, collateralAsset);</span>
+<span class="cstat-no" title="statement not covered" >        require(amount &lt;= maxMintable, "ESGStablecoin: Exceeds collateral ratio")</span>;
+        
+        position.borrowedAmount += amount;
+        position.lastUpdate = block.timestamp;
+        
+        totalUserDebt[msg.sender] += amount;
+        collaterals[collateralAsset].totalBorrowed += amount;
+        
+<span class="cstat-no" title="statement not covered" >        _mint(msg.sender, amount)</span>;
+        
+<span class="cstat-no" title="statement not covered" >        emit StablecoinMinted(msg.sender, collateralAsset, amount);</span>
+    }
+&nbsp;
+    /**
+     * @dev Repay stablecoin debt and unlock collateral
+     * @param collateralAsset Address of the collateral asset
+     * @param amount Amount of stablecoin to repay
+     */
+<span class="fstat-no" title="function not covered" >    function repayStablecoin(address collateralAsset, uint256 amount) </span>
+        external 
+        validCollateral(collateralAsset)
+        nonReentrant 
+        whenNotPaused 
+    {
+<span class="cstat-no" title="statement not covered" >        require(amount &gt; 0, "ESGStablecoin: Amount must be positive")</span>;
+        
+<span class="cstat-no" title="statement not covered" >        Position storage position = positions[msg.sender][collateralAsset];</span>
+<span class="cstat-no" title="statement not covered" >        require(position.borrowedAmount &gt;= amount, "ESGStablecoin: Exceeds debt amount")</span>;
+        
+        // Collect stability fee
+<span class="cstat-no" title="statement not covered" >        uint256 stabilityFee = _calculateStabilityFee(msg.sender, collateralAsset);</span>
+<span class="cstat-no" title="statement not covered" >        if (stabilityFee &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >            require(balanceOf(msg.sender) &gt;= amount + stabilityFee, "ESGStablecoin: Insufficient balance for fee")</span>;
+<span class="cstat-no" title="statement not covered" >            _burn(msg.sender, stabilityFee)</span>;
+            totalProtocolFees += stabilityFee;
+<span class="cstat-no" title="statement not covered" >            emit StabilityFeeCollected(msg.sender, stabilityFee);</span>
+        }
+        
+<span class="cstat-no" title="statement not covered" >        _burn(msg.sender, amount)</span>;
+        
+        position.borrowedAmount -= amount;
+        position.lastUpdate = block.timestamp;
+        
+        totalUserDebt[msg.sender] -= amount;
+        collaterals[collateralAsset].totalBorrowed -= amount;
+        
+<span class="cstat-no" title="statement not covered" >        emit StablecoinBurned(msg.sender, collateralAsset, amount);</span>
+    }
+&nbsp;
+    /**
+     * @dev Withdraw collateral after repaying debt
+     * @param collateralAsset Address of the collateral asset
+     * @param amount Amount of collateral to withdraw
+     */
+<span class="fstat-no" title="function not covered" >    function withdrawCollateral(address collateralAsset, uint256 amount) </span>
+        external 
+        validCollateral(collateralAsset)
+        nonReentrant 
+        whenNotPaused 
+    {
+<span class="cstat-no" title="statement not covered" >        require(amount &gt; 0, "ESGStablecoin: Amount must be positive")</span>;
+        
+<span class="cstat-no" title="statement not covered" >        Position storage position = positions[msg.sender][collateralAsset];</span>
+<span class="cstat-no" title="statement not covered" >        require(position.collateralAmount &gt;= amount, "ESGStablecoin: Insufficient collateral")</span>;
+        
+        // Check if withdrawal maintains healthy collateral ratio
+<span class="cstat-no" title="statement not covered" >        uint256 remainingCollateral = position.collateralAmount - amount;</span>
+<span class="cstat-no" title="statement not covered" >        if (position.borrowedAmount &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >            uint256 collateralValue = _getCollateralValue(collateralAsset, remainingCollateral);</span>
+<span class="cstat-no" title="statement not covered" >            uint256 requiredValue = (position.borrowedAmount * collaterals[collateralAsset].collateralRatio) / 10000;</span>
+<span class="cstat-no" title="statement not covered" >            require(collateralValue &gt;= requiredValue, "ESGStablecoin: Would breach collateral ratio")</span>;
+        }
+        
+        position.collateralAmount -= amount;
+        position.lastUpdate = block.timestamp;
+        
+<span class="cstat-no" title="statement not covered" >        if (position.collateralAmount == 0 &amp;&amp; position.borrowedAmount == 0) {</span>
+            position.isActive = false;
+        }
+        
+        collaterals[collateralAsset].totalDeposited -= amount;
+        
+        // Update ESG score
+<span class="cstat-no" title="statement not covered" >        _updateESGScore(msg.sender, collateralAsset, amount, false)</span>;
+        
+<span class="cstat-no" title="statement not covered" >        IERC20(collateralAsset).transfer(msg.sender, amount)</span>;
+        
+<span class="cstat-no" title="statement not covered" >        emit CollateralWithdrawn(msg.sender, collateralAsset, amount);</span>
+    }
+&nbsp;
+    /**
+     * @dev Liquidate an undercollateralized position
+     * @param user Address of the user to liquidate
+     * @param collateralAsset Address of the collateral asset
+     * @param debtAmount Amount of debt to repay
+     */
+<span class="fstat-no" title="function not covered" >    function liquidate(address user, address collateralAsset, uint256 debtAmount) </span>
+        external 
+        validCollateral(collateralAsset)
+        nonReentrant 
+        whenNotPaused 
+    {
+<span class="cstat-no" title="statement not covered" >        require(user != address(0), "ESGStablecoin: Invalid user address")</span>;
+<span class="cstat-no" title="statement not covered" >        require(debtAmount &gt; 0, "ESGStablecoin: Invalid debt amount")</span>;
+        
+<span class="cstat-no" title="statement not covered" >        Position storage position = positions[user][collateralAsset];</span>
+<span class="cstat-no" title="statement not covered" >        require(position.isActive, "ESGStablecoin: No active position")</span>;
+<span class="cstat-no" title="statement not covered" >        require(position.borrowedAmount &gt;= debtAmount, "ESGStablecoin: Exceeds user debt")</span>;
+        
+        // Check if position is liquidatable
+<span class="cstat-no" title="statement not covered" >        require(_isLiquidatable(user, collateralAsset), "ESGStablecoin: Position is healthy")</span>;
+        
+        // Calculate collateral to seize
+<span class="cstat-no" title="statement not covered" >        uint256 collateralPrice = _getCollateralPrice(collateralAsset);</span>
+<span class="cstat-no" title="statement not covered" >        uint256 collateralToSeize = (debtAmount * (10000 + liquidationPenalty) * 1e18) / (collateralPrice * 10000);</span>
+        
+<span class="cstat-no" title="statement not covered" >        require(position.collateralAmount &gt;= collateralToSeize, "ESGStablecoin: Insufficient collateral")</span>;
+        
+        // Transfer debt token from liquidator
+<span class="cstat-no" title="statement not covered" >        _burn(msg.sender, debtAmount)</span>;
+        
+        // Transfer collateral to liquidator
+        position.collateralAmount -= collateralToSeize;
+        position.borrowedAmount -= debtAmount;
+        position.lastUpdate = block.timestamp;
+        
+        totalUserDebt[user] -= debtAmount;
+        collaterals[collateralAsset].totalBorrowed -= debtAmount;
+        collaterals[collateralAsset].totalDeposited -= collateralToSeize;
+        
+<span class="cstat-no" title="statement not covered" >        IERC20(collateralAsset).transfer(msg.sender, collateralToSeize)</span>;
+        
+        // Record liquidation
+<span class="cstat-no" title="statement not covered" >        LiquidationData memory liquidationData = LiquidationData({</span>
+            user: user,
+            collateralAsset: collateralAsset,
+            collateralAmount: collateralToSeize,
+            debtAmount: debtAmount,
+            liquidationPrice: collateralPrice,
+            timestamp: block.timestamp
+        });
+        
+<span class="cstat-no" title="statement not covered" >        liquidationHistory.push(liquidationData)</span>;
+<span class="cstat-no" title="statement not covered" >        userLiquidations[user].push(liquidationHistory.length - 1)</span>;
+        
+<span class="cstat-no" title="statement not covered" >        emit Liquidation(user, collateralAsset, collateralToSeize, debtAmount);</span>
+    }
+&nbsp;
+    /**
+     * @dev Update price from oracle (emergency oracle only)
+     * @param newPrice New price for the stablecoin
+     */
+<span class="fstat-no" title="function not covered" >    function updatePrice(uint256 newPrice) external onlyEmergencyOracle {</span>
+<span class="cstat-no" title="statement not covered" >        require(newPrice &gt; 0, "ESGStablecoin: Invalid price")</span>;
+        currentPrice = newPrice;
+        lastPriceUpdate = block.timestamp;
+<span class="cstat-no" title="statement not covered" >        emit PriceUpdated(newPrice, block.timestamp);</span>
+    }
+&nbsp;
+    /**
+     * @dev Update user's ESG score
+     * @param user User address
+     * @param newScore New ESG score (0-10000)
+     */
+<span class="fstat-no" title="function not covered" >    function updateESGScore(address user, uint256 newScore) external onlyOwner {</span>
+<span class="cstat-no" title="statement not covered" >        require(newScore &lt;= ESG_SCORE_MULTIPLIER, "ESGStablecoin: Invalid ESG score")</span>;
+        userESGScore[user] = newScore;
+<span class="cstat-no" title="statement not covered" >        emit ESGScoreUpdated(user, newScore);</span>
+    }
+&nbsp;
+    /**
+     * @dev Collect protocol fees to treasury
+     */
+<span class="fstat-no" title="function not covered" >    function collectFees() external nonReentrant {</span>
+<span class="cstat-no" title="statement not covered" >        require(totalProtocolFees &gt; 0, "ESGStablecoin: No fees to collect")</span>;
+<span class="cstat-no" title="statement not covered" >        uint256 fees = totalProtocolFees;</span>
+        totalProtocolFees = 0;
+        lastFeeCollection = block.timestamp;
+        
+<span class="cstat-no" title="statement not covered" >        _mint(treasury, fees)</span>;
+    }
+&nbsp;
+    /**
+     * @dev Pause the contract (emergency only)
+     */
+<span class="fstat-no" title="function not covered" >    function pause() external onlyOwner {</span>
+<span class="cstat-no" title="statement not covered" >        _pause()</span>;
+    }
+&nbsp;
+    /**
+     * @dev Unpause the contract
+     */
+<span class="fstat-no" title="function not covered" >    function unpause() external onlyOwner {</span>
+<span class="cstat-no" title="statement not covered" >        _unpause()</span>;
+    }
+&nbsp;
+    // View functions
+<span class="fstat-no" title="function not covered" >    function getCollateralInfo(address asset) external view returns (CollateralAsset memory) {</span>
+<span class="cstat-no" title="statement not covered" >        return collaterals[asset];</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getUserPosition(address user, address collateralAsset) external view returns (Position memory) {</span>
+<span class="cstat-no" title="statement not covered" >        return positions[user][collateralAsset];</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getMaxMintable(address user, address collateralAsset) external view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        return _getMaxMintable(user, collateralAsset);</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function isLiquidatable(address user, address collateralAsset) external view returns (bool) {</span>
+<span class="cstat-no" title="statement not covered" >        return _isLiquidatable(user, collateralAsset);</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getCollateralRatio(address user, address collateralAsset) external view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        return _getCollateralRatio(user, collateralAsset);</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getUserESGScore(address user) external view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        return userESGScore[user];</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getCollateralAssets() external view returns (address[] memory) {</span>
+<span class="cstat-no" title="statement not covered" >        return collateralAssets;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getLiquidationHistory(uint256 index) external view returns (LiquidationData memory) {</span>
+<span class="cstat-no" title="statement not covered" >        require(index &lt; liquidationHistory.length, "ESGStablecoin: Invalid index")</span>;
+<span class="cstat-no" title="statement not covered" >        return liquidationHistory[index];</span>
+    }
+&nbsp;
+    // Internal functions
+<span class="fstat-no" title="function not covered" >    function _getCollateralValue(address collateralAsset, uint256 amount) internal view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        uint256 price = _getCollateralPrice(collateralAsset);</span>
+<span class="cstat-no" title="statement not covered" >        return (amount * price) / 1e18;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _getCollateralPrice(address collateralAsset) internal view returns (uint256) {</span>
+        // In production, this would call the price oracle
+        // For now, return a mock price
+<span class="cstat-no" title="statement not covered" >        return 1e18;</span> // $1 per token
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _getMaxMintable(address user, address collateralAsset) internal view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        Position storage position = positions[user][collateralAsset];</span>
+<span class="cstat-no" title="statement not covered" >        if (!position.isActive || position.collateralAmount == 0) {</span>
+<span class="cstat-no" title="statement not covered" >            return 0;</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        uint256 collateralValue = _getCollateralValue(collateralAsset, position.collateralAmount);</span>
+<span class="cstat-no" title="statement not covered" >        uint256 maxBorrow = (collateralValue * 10000) / collaterals[collateralAsset].collateralRatio;</span>
+        
+<span class="cstat-no" title="statement not covered" >        if (maxBorrow &lt;= position.borrowedAmount) {</span>
+<span class="cstat-no" title="statement not covered" >            return 0;</span>
+        }
+        
+<span class="cstat-no" title="statement not covered" >        return maxBorrow - position.borrowedAmount;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _isLiquidatable(address user, address collateralAsset) internal view returns (bool) {</span>
+<span class="cstat-no" title="statement not covered" >        uint256 ratio = _getCollateralRatio(user, collateralAsset);</span>
+<span class="cstat-no" title="statement not covered" >        return ratio &gt; 0 &amp;&amp; ratio &lt; collaterals[collateralAsset].liquidationThreshold;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _getCollateralRatio(address user, address collateralAsset) internal view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        Position storage position = positions[user][collateralAsset];</span>
+<span class="cstat-no" title="statement not covered" >        if (position.borrowedAmount == 0) {</span>
+<span class="cstat-no" title="statement not covered" >            return type(uint256).max;</span> // Infinite ratio when no debt
+        }
+        
+<span class="cstat-no" title="statement not covered" >        uint256 collateralValue = _getCollateralValue(collateralAsset, position.collateralAmount);</span>
+<span class="cstat-no" title="statement not covered" >        return (collateralValue * 10000) / position.borrowedAmount;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _calculateStabilityFee(address user, address collateralAsset) internal view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        Position storage position = positions[user][collateralAsset];</span>
+<span class="cstat-no" title="statement not covered" >        if (position.borrowedAmount == 0) {</span>
+<span class="cstat-no" title="statement not covered" >            return 0;</span>
+        }
+        
+<span class="cstat-no" title="statement not covered" >        uint256 timeElapsed = block.timestamp - position.lastUpdate;</span>
+<span class="cstat-no" title="statement not covered" >        uint256 annualFee = (position.borrowedAmount * stabilityFeeRate) / 10000;</span>
+<span class="cstat-no" title="statement not covered" >        return (annualFee * timeElapsed) / 365 days;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _updateESGScore(address user, address collateralAsset, uint256 amount, bool isDeposit) internal {</span>
+<span class="cstat-no" title="statement not covered" >        CollateralType collateralType = collaterals[collateralAsset].collateralType;</span>
+<span class="cstat-no" title="statement not covered" >        uint256 weight = typeESGWeight[collateralType];</span>
+<span class="cstat-no" title="statement not covered" >        uint256 scoreImpact = (amount * weight) / 1e18;</span>
+        
+<span class="cstat-no" title="statement not covered" >        if (isDeposit) {</span>
+            userESGScore[user] = Math.min(userESGScore[user] + scoreImpact, ESG_SCORE_MULTIPLIER);
+        } else {
+<span class="cstat-no" title="statement not covered" >            if (userESGScore[user] &gt; scoreImpact) {</span>
+                userESGScore[user] -= scoreImpact;
+            } else {
+                userESGScore[user] = 0;
+            }
+        }
+        
+<span class="cstat-no" title="statement not covered" >        emit ESGScoreUpdated(user, userESGScore[user]);</span>
+    }
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Aug 24 2025 14:39:07 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

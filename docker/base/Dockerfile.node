@@ -1,0 +1,66 @@
+# ESG System - Base Node.js Dockerfile
+# Multi-stage build for optimized production images
+
+# Build stage
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY tsconfig.json ./
+
+# Install all dependencies (including dev)
+RUN npm ci --include=dev
+
+# Copy source code
+COPY src/ ./src/
+COPY contracts/ ./contracts/
+COPY hardhat.config.ts ./
+
+# Build the application
+RUN npm run build
+RUN npm run compile
+
+# Production stage
+FROM node:18-alpine AS production
+
+# Install security updates
+RUN apk update && apk upgrade && apk add --no-cache dumb-init curl
+
+# Create non-root user
+RUN addgroup -g 1001 -S esg && \
+    adduser -S esg -u 1001
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install production dependencies only
+RUN npm ci --only=production && npm cache clean --force
+
+# Copy built application from builder stage
+COPY --from=builder --chown=esg:esg /app/dist ./dist
+COPY --from=builder --chown=esg:esg /app/artifacts ./artifacts
+COPY --from=builder --chown=esg:esg /app/typechain-types ./typechain-types
+
+# Copy configuration files
+COPY --chown=esg:esg config/ ./config/
+COPY --chown=esg:esg scripts/setup/entrypoint.sh ./entrypoint.sh
+
+# Make entrypoint executable
+RUN chmod +x ./entrypoint.sh
+
+# Switch to non-root user
+USER esg
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:${PORT:-3000}/health || exit 1
+
+# Use dumb-init to handle signals properly
+ENTRYPOINT ["/usr/bin/dumb-init", "--", "./entrypoint.sh"]
+
+# Default command
+CMD ["node", "dist/server.js"]

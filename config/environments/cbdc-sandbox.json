@@ -1,0 +1,365 @@
+{
+  "network": "cbdc-sandbox",
+  "environment": "production",
+  "rpcUrl": "https://rpc.cbdc-sandbox.central-bank.org",
+  "chainId": 100001,
+  "blockTime": 3,
+  "gasPrice": "50000000000",
+  "gasLimit": "8000000",
+  "contracts": {
+    "deployTimeout": 300000,
+    "verificationEnabled": true,
+    "optimizerEnabled": true,
+    "optimizerRuns": 1000,
+    "gasMultiplier": 1.1,
+    "upgradeableContracts": true
+  },
+  "database": {
+    "primary": {
+      "host": "cbdc-db-primary.esg-system.org",
+      "port": 5432,
+      "database": "esg_cbdc",
+      "user": "esg_production",
+      "maxConnections": 50,
+      "ssl": true,
+      "sslMode": "require",
+      "connectionTimeout": 30000
+    },
+    "replica": {
+      "host": "cbdc-db-replica.esg-system.org",
+      "port": 5432,
+      "database": "esg_cbdc",
+      "user": "esg_production",
+      "maxConnections": 50,
+      "ssl": true,
+      "sslMode": "require",
+      "connectionTimeout": 30000
+    },
+    "replication": {
+      "enabled": true,
+      "lagThreshold": 5000
+    },
+    "backup": {
+      "frequency": "1h",
+      "retention": "30d",
+      "encryption": true
+    }
+  },
+  "redis": {
+    "cluster": {
+      "nodes": [
+        "cbdc-redis-1.esg-system.org:6379",
+        "cbdc-redis-2.esg-system.org:6379",
+        "cbdc-redis-3.esg-system.org:6379"
+      ],
+      "enableReadyCheck": true,
+      "maxRetriesPerRequest": 3
+    },
+    "keyPrefix": "esg:cbdc:",
+    "password": true,
+    "tls": true,
+    "compression": true
+  },
+  "ipfs": {
+    "cluster": {
+      "peers": [
+        "cbdc-ipfs-1.esg-system.org:9094",
+        "cbdc-ipfs-2.esg-system.org:9094"
+      ],
+      "replicationFactor": 2,
+      "pinning": true
+    },
+    "gateway": "https://cbdc-ipfs.esg-system.org",
+    "encryption": true
+  },
+  "cbdc": {
+    "integration": {
+      "apiEndpoint": "https://api.cbdc-sandbox.central-bank.org",
+      "authType": "oauth2",
+      "scopes": ["read", "write", "transfer"],
+      "rateLimit": {
+        "requests": 1000,
+        "window": "1h"
+      }
+    },
+    "compliance": {
+      "kycRequired": true,
+      "amlChecking": true,
+      "reportingEnabled": true,
+      "auditTrail": true
+    },
+    "settlement": {
+      "enabled": true,
+      "realTime": true,
+      "batchProcessing": false
+    }
+  },
+  "monitoring": {
+    "prometheus": {
+      "url": "https://cbdc-prometheus.esg-system.org:9090",
+      "pushGateway": "https://cbdc-push-gateway.esg-system.org:9091",
+      "retention": "90d"
+    },
+    "grafana": {
+      "url": "https://dashboard.esg-cbdc.com",
+      "dashboardId": "cbdc-production",
+      "alerting": true,
+      "sla": {
+        "uptime": 99.95,
+        "responseTime": 500
+      }
+    },
+    "elasticsearch": {
+      "cluster": {
+        "nodes": [
+          "https://cbdc-es-1.esg-system.org:9200",
+          "https://cbdc-es-2.esg-system.org:9200",
+          "https://cbdc-es-3.esg-system.org:9200"
+        ],
+        "auth": true,
+        "tls": true
+      },
+      "index": "esg-cbdc-logs",
+      "retention": "180d"
+    },
+    "apm": {
+      "enabled": true,
+      "service": "esg-cbdc-api",
+      "environment": "production"
+    },
+    "sentry": {
+      "enabled": true,
+      "environment": "cbdc-sandbox",
+      "tracing": true,
+      "performance": true,
+      "release": true
+    }
+  },
+  "features": {
+    "debugMode": false,
+    "hotReload": false,
+    "verboseLogging": false,
+    "mockData": false,
+    "testAccounts": false,
+    "performanceMonitoring": true,
+    "securityScanning": true,
+    "complianceReporting": true,
+    "realTimeAnalytics": true,
+    "automaticScaling": true
+  },
+  "security": {
+    "cors": {
+      "origin": [
+        "https://esg-marketplace.org",
+        "https://admin.esg-system.org",
+        "https://dashboard.esg-cbdc.com"
+      ],
+      "credentials": true,
+      "methods": ["GET", "POST", "PUT", "DELETE"],
+      "allowedHeaders": ["Authorization", "Content-Type"]
+    },
+    "rateLimit": {
+      "windowMs": 60000,
+      "max": 100,
+      "message": "Rate limit exceeded",
+      "skipSuccessfulRequests": true
+    },
+    "encryption": {
+      "algorithm": "aes-256-gcm",
+      "atRest": true,
+      "inTransit": true
+    },
+    "https": {
+      "enabled": true,
+      "forceRedirect": true,
+      "hsts": true
+    },
+    "vault": {
+      "enabled": true,
+      "url": "https://cbdc-vault.esg-system.org:8200",
+      "auth": "kubernetes",
+      "secretRotation": true
+    },
+    "waf": {
+      "enabled": true,
+      "rules": ["OWASP", "custom"],
+      "logging": true
+    },
+    "firewall": {
+      "enabled": true,
+      "allowedIPs": [
+        "203.0.113.0/24",
+        "198.51.100.0/24"
+      ],
+      "blockedCountries": [
+        "CN",
+        "RU",
+        "KP"
+      ],
+      "ddosProtection": true
+    },
+    "certificates": {
+      "autoRenewal": true,
+      "letsEncrypt": false,
+      "customCA": true
+    }
+  },
+  "deployment": {
+    "strategy": "blue-green",
+    "autoMigration": false,
+    "seedData": false,
+    "backupBeforeDeploy": true,
+    "rollbackOnFailure": true,
+    "smokeTests": true,
+    "loadTests": true,
+    "canaryDeployment": false,
+    "approvalRequired": true
+  },
+  "tokens": {
+    "esgToken": {
+      "name": "ESG Token",
+      "symbol": "ESG",
+      "decimals": 18,
+      "initialSupply": "100000000000000000000000000",
+      "mintable": false,
+      "burnable": true,
+      "pausable": true
+    },
+    "cbdcToken": {
+      "name": "Central Bank Digital Currency",
+      "symbol": "CBDC",
+      "decimals": 2,
+      "compliance": {
+        "kycRequired": true,
+        "amlEnabled": true,
+        "sanctionsChecking": true
+      }
+    }
+  },
+  "compliance": {
+    "regulations": [
+      "GDPR",
+      "CCPA",
+      "PCI-DSS",
+      "SOX",
+      "Basel III"
+    ],
+    "reporting": {
+      "frequency": "daily",
+      "recipients": [
+        "compliance@esg-system.org",
+        "audit@central-bank.org"
+      ],
+      "retention": "7y"
+    },
+    "dataProtection": {
+      "pii": {
+        "encryption": true,
+        "anonymization": true,
+        "rightToErasure": true
+      },
+      "auditLog": {
+        "enabled": true,
+        "immutable": true,
+        "retention": "10y"
+      }
+    }
+  },
+  "testing": {
+    "accounts": [],
+    "mockContracts": false,
+    "fastMode": false,
+    "coverageReports": true,
+    "performanceBenchmarks": true,
+    "securityTests": true,
+    "complianceTests": true,
+    "loadTesting": {
+      "enabled": true,
+      "maxUsers": 10000,
+      "rampUp": "5m",
+      "duration": "30m"
+    }
+  },
+  "alerts": {
+    "email": {
+      "recipients": [
+        "operations@esg-system.org",
+        "on-call@esg-system.org",
+        "compliance@esg-system.org"
+      ],
+      "smtp": {
+        "host": "smtp.esg-system.org",
+        "port": 587,
+        "secure": true,
+        "auth": true
+      }
+    },
+    "slack": {
+      "webhooks": [
+        {
+          "url": "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX",
+          "channel": "#esg-production-alerts"
+        },
+        {
+          "url": "https://hooks.slack.com/services/T00000000/B00000001/YYYYYYYYYYYYYYYYYYYYYYYY",
+          "channel": "#cbdc-integration"
+        }
+      ]
+    },
+    "pagerDuty": {
+      "enabled": true,
+      "integrationKey": true,
+      "escalationPolicy": "production-escalation"
+    },
+    "thresholds": {
+      "errorRate": 0.01,
+      "responseTime": 500,
+      "memoryUsage": 0.80,
+      "diskUsage": 0.75,
+      "cpuUsage": 0.80,
+      "transactionFailureRate": 0.005
+    }
+  },
+  "backup": {
+    "frequency": "15m",
+    "retention": "90d",
+    "storage": {
+      "primary": "s3://esg-cbdc-backups-primary",
+      "secondary": "s3://esg-cbdc-backups-secondary"
+    },
+    "encryption": true,
+    "compression": true,
+    "verification": true
+  },
+  "disaster_recovery": {
+    "rto": "1h",
+    "rpo": "15m",
+    "strategy": "active-passive",
+    "failoverTesting": "monthly",
+    "backupSites": [
+      "us-west-2",
+      "eu-central-1"
+    ]
+  },
+  "performance": {
+    "targets": {
+      "responseTime": 500,
+      "throughput": 10000,
+      "availability": 99.95,
+      "concurrent_users": 50000
+    },
+    "autoscaling": {
+      "enabled": true,
+      "minInstances": 3,
+      "maxInstances": 50,
+      "targetCPU": 70,
+      "scaleUpCooldown": "5m",
+      "scaleDownCooldown": "15m"
+    },
+    "caching": {
+      "strategy": "write-through",
+      "ttl": 300,
+      "compression": true
+    }
+  }
+}

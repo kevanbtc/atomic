@@ -1,0 +1,10 @@
+{
+  "default": [
+    {
+      "key": "esg/tests",
+      "value": "{\"testStructure\":{\"unitTests\":[\"WaterVault.test.js\",\"CarbonVault.test.js\",\"ESGStablecoin.test.js\",\"CBDCBridge.test.js\"],\"integrationTests\":[\"Integration.test.js\"],\"performanceTests\":[\"Gas.test.js\"],\"mockContracts\":[\"MockWaterOracle.sol\",\"MockCarbonOracle.sol\",\"MockPriceOracle.sol\",\"MockCBDCValidator.sol\",\"MockERC20.sol\"]},\"testPatterns\":{\"deploymentTests\":\"Verify contract deployment with correct initial state\",\"accessControlTests\":\"Test owner-only functions and role-based permissions\",\"oracleIntegrationTests\":\"Test oracle price and data feeds with mocks\",\"tokenMintingBurning\":\"Test token lifecycle with edge cases and validations\",\"vaultOperations\":\"Test deposit/withdrawal with collateralization checks\",\"bridgeMechanics\":\"Test cross-chain bridge initiation, completion, cancellation\",\"liquidationScenarios\":\"Test undercollateralized position liquidation\",\"pausabilityTests\":\"Test contract pausing in emergency scenarios\",\"edgeCaseTests\":\"Test boundary conditions and error handling\",\"gasOptimizationTests\":\"Benchmark gas usage across different scenarios\"},\"coverageTargets\":{\"statements\":\"90%\",\"branches\":\"85%\",\"functions\":\"95%\",\"lines\":\"90%\"},\"testingBestPractices\":{\"setupBeforeEach\":\"Deploy fresh contracts and setup test state for each test\",\"eventVerification\":\"Verify event emissions with correct parameters\",\"stateVerification\":\"Check contract state changes after operations\",\"errorTesting\":\"Test all revert conditions with specific error messages\",\"boundaryTesting\":\"Test minimum, maximum, and threshold values\",\"integrationTesting\":\"Test contract interactions across the ESG ecosystem\"}}",
+      "namespace": "default",
+      "timestamp": 1756060231167
+    }
+  ]
+}

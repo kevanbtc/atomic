@@ -1,0 +1,147 @@
+{
+  "network": "testnet",
+  "environment": "testing",
+  "rpcUrl": "https://rpc.testnet.esg-blockchain.org",
+  "chainId": 80001,
+  "blockTime": 5,
+  "gasPrice": "30000000000",
+  "gasLimit": "6000000",
+  "contracts": {
+    "deployTimeout": 120000,
+    "verificationEnabled": true,
+    "optimizerEnabled": true,
+    "optimizerRuns": 200,
+    "gasMultiplier": 1.2
+  },
+  "database": {
+    "host": "testnet-db.esg-system.org",
+    "port": 5432,
+    "database": "esg_testnet",
+    "user": "esg_user",
+    "maxConnections": 25,
+    "ssl": true,
+    "sslMode": "require",
+    "connectionTimeout": 30000,
+    "replication": {
+      "enabled": false
+    }
+  },
+  "redis": {
+    "host": "testnet-redis.esg-system.org",
+    "port": 6379,
+    "db": 1,
+    "keyPrefix": "esg:testnet:",
+    "password": true,
+    "tls": true,
+    "maxRetries": 3
+  },
+  "ipfs": {
+    "host": "testnet-ipfs.esg-system.org",
+    "port": 5001,
+    "protocol": "https",
+    "pinning": true,
+    "cluster": false
+  },
+  "monitoring": {
+    "prometheus": {
+      "url": "http://testnet-prometheus.esg-system.org:9090",
+      "pushGateway": "http://testnet-push-gateway.esg-system.org:9091"
+    },
+    "grafana": {
+      "url": "https://testnet-grafana.esg-system.org",
+      "dashboardId": "testnet-esg",
+      "alerting": true
+    },
+    "elasticsearch": {
+      "node": "https://testnet-es.esg-system.org:9200",
+      "index": "esg-testnet-logs",
+      "auth": true
+    },
+    "sentry": {
+      "enabled": true,
+      "environment": "testnet",
+      "tracing": true
+    }
+  },
+  "features": {
+    "debugMode": false,
+    "hotReload": false,
+    "verboseLogging": false,
+    "mockData": false,
+    "testAccounts": true,
+    "performanceMonitoring": true,
+    "securityScanning": true
+  },
+  "security": {
+    "cors": {
+      "origin": [
+        "https://testnet.esg-marketplace.org",
+        "https://testnet-admin.esg-system.org"
+      ],
+      "credentials": true
+    },
+    "rateLimit": {
+      "windowMs": 60000,
+      "max": 500
+    },
+    "encryption": true,
+    "https": true,
+    "vault": {
+      "enabled": true,
+      "url": "https://testnet-vault.esg-system.org:8200"
+    },
+    "firewall": {
+      "enabled": true,
+      "allowedIPs": ["0.0.0.0/0"],
+      "blockedCountries": []
+    }
+  },
+  "deployment": {
+    "autoMigration": false,
+    "seedData": false,
+    "backupBeforeDeploy": true,
+    "rollbackOnFailure": true,
+    "smokeTests": true,
+    "loadTests": true
+  },
+  "tokens": {
+    "esgToken": {
+      "name": "ESG Token (Testnet)",
+      "symbol": "ESGTEST",
+      "decimals": 18,
+      "initialSupply": "500000000000000000000000000"
+    }
+  },
+  "testing": {
+    "accounts": [],
+    "mockContracts": false,
+    "fastMode": false,
+    "coverageReports": true,
+    "performanceBenchmarks": true
+  },
+  "alerts": {
+    "email": {
+      "recipients": ["dev-team@esg-system.org"],
+      "smtp": {
+        "host": "smtp.esg-system.org",
+        "port": 587,
+        "secure": true
+      }
+    },
+    "slack": {
+      "webhook": true,
+      "channel": "#esg-testnet-alerts"
+    },
+    "thresholds": {
+      "errorRate": 0.05,
+      "responseTime": 2000,
+      "memoryUsage": 0.85,
+      "diskUsage": 0.80
+    }
+  },
+  "backup": {
+    "frequency": "6h",
+    "retention": "7d",
+    "storage": "s3://esg-testnet-backups"
+  }
+}

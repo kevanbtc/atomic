@@ -1,0 +1,908 @@
+openapi: 3.0.0
+info:
+  title: ESG Tokenization Platform API
+  version: 1.0.0
+  description: |
+    Comprehensive API for ESG (Environmental, Social, Governance) tokenization platform
+    supporting carbon credits, water credits, CBDC bridge operations, and stablecoin management.
+    
+    This platform enables:
+    - ESG-backed stablecoin minting and management
+    - Cross-chain CBDC bridge operations
+    - Carbon credit tokenization and trading
+    - Water conservation credit management
+    - NFT marketplace with ESG scoring
+  contact:
+    name: Unykorn ESG Platform
+    url: https://unykorn.io
+    email: support@unykorn.io
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.unykorn.io/v1
+    description: Production server
+  - url: https://staging-api.unykorn.io/v1
+    description: Staging server
+  - url: https://localhost:3000/v1
+    description: Local development server
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+paths:
+  # ESG Stablecoin Endpoints
+  /stablecoin/mint:
+    post:
+      tags:
+        - ESG Stablecoin
+      summary: Mint ESG-backed stablecoin
+      description: Mint stablecoin tokens against deposited ESG collateral assets
+      operationId: mintStablecoin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MintStablecoinRequest'
+      responses:
+        '200':
+          description: Stablecoin minted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MintStablecoinResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+  /stablecoin/repay:
+    post:
+      tags:
+        - ESG Stablecoin
+      summary: Repay stablecoin debt
+      description: Repay stablecoin debt to unlock collateral
+      operationId: repayStablecoin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RepayStablecoinRequest'
+      responses:
+        '200':
+          description: Debt repaid successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepayStablecoinResponse'
+
+  /stablecoin/positions/{userAddress}:
+    get:
+      tags:
+        - ESG Stablecoin
+      summary: Get user positions
+      description: Retrieve all collateral positions for a user
+      operationId: getUserPositions
+      parameters:
+        - name: userAddress
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^0x[a-fA-F0-9]{40}$'
+          description: Ethereum address of the user
+      responses:
+        '200':
+          description: User positions retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPositionsResponse'
+
+  # CBDC Bridge Endpoints
+  /cbdc/bridge/initiate:
+    post:
+      tags:
+        - CBDC Bridge
+      summary: Initiate cross-chain bridge transaction
+      description: Start a cross-chain bridge transaction for CBDC tokens
+      operationId: initiateBridge
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiateBridgeRequest'
+      responses:
+        '200':
+          description: Bridge transaction initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiateBridgeResponse'
+
+  /cbdc/bridge/complete:
+    post:
+      tags:
+        - CBDC Bridge
+      summary: Complete bridge transaction
+      description: Complete a cross-chain bridge transaction with validator signature
+      operationId: completeBridge
+      security:
+        - ValidatorAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompleteBridgeRequest'
+      responses:
+        '200':
+          description: Bridge transaction completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompleteBridgeResponse'
+
+  /cbdc/bridge/status/{transactionId}:
+    get:
+      tags:
+        - CBDC Bridge
+      summary: Get bridge transaction status
+      description: Check the status of a bridge transaction
+      operationId: getBridgeStatus
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^0x[a-fA-F0-9]{64}$'
+          description: Bridge transaction ID
+      responses:
+        '200':
+          description: Bridge status retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BridgeStatusResponse'
+
+  # Carbon Credits Endpoints
+  /carbon/credits/issue:
+    post:
+      tags:
+        - Carbon Credits
+      summary: Issue carbon credits
+      description: Issue carbon credits for verified environmental projects
+      operationId: issueCarbonCredits
+      security:
+        - IssuerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueCarbonCreditsRequest'
+      responses:
+        '200':
+          description: Carbon credits issued successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueCarbonCreditsResponse'
+
+  /carbon/credits/retire:
+    post:
+      tags:
+        - Carbon Credits
+      summary: Retire carbon credits
+      description: Permanently retire carbon credits from circulation
+      operationId: retireCarbonCredits
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetireCarbonCreditsRequest'
+      responses:
+        '200':
+          description: Carbon credits retired successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetireCarbonCreditsResponse'
+
+  /carbon/credits/{creditId}:
+    get:
+      tags:
+        - Carbon Credits
+      summary: Get carbon credit details
+      description: Retrieve details of a specific carbon credit
+      operationId: getCarbonCredit
+      parameters:
+        - name: creditId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Carbon credit ID
+      responses:
+        '200':
+          description: Carbon credit details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarbonCreditResponse'
+
+  # Water Credits Endpoints
+  /water/projects/register:
+    post:
+      tags:
+        - Water Credits
+      summary: Register water conservation project
+      description: Register a new water conservation project for credit issuance
+      operationId: registerWaterProject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterWaterProjectRequest'
+      responses:
+        '200':
+          description: Water project registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterWaterProjectResponse'
+
+  /water/projects/{projectId}/verify:
+    post:
+      tags:
+        - Water Credits
+      summary: Verify water conservation project
+      description: Verify a water conservation project by oracle
+      operationId: verifyWaterProject
+      security:
+        - OracleAuth: []
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Water project ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyWaterProjectRequest'
+      responses:
+        '200':
+          description: Water project verified successfully
+
+  /water/credits/issue:
+    post:
+      tags:
+        - Water Credits
+      summary: Issue water credits
+      description: Issue water credits for verified conservation projects
+      operationId: issueWaterCredits
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueWaterCreditsRequest'
+      responses:
+        '200':
+          description: Water credits issued successfully
+
+  # ESG Scoring Endpoints
+  /esg/scores/{userAddress}:
+    get:
+      tags:
+        - ESG Scoring
+      summary: Get user ESG score
+      description: Retrieve ESG score for a user based on their activities
+      operationId: getESGScore
+      parameters:
+        - name: userAddress
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^0x[a-fA-F0-9]{40}$'
+          description: User's Ethereum address
+      responses:
+        '200':
+          description: ESG score retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ESGScoreResponse'
+
+  /esg/scores/update:
+    post:
+      tags:
+        - ESG Scoring
+      summary: Update ESG score
+      description: Update user ESG score (admin only)
+      operationId: updateESGScore
+      security:
+        - AdminAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateESGScoreRequest'
+      responses:
+        '200':
+          description: ESG score updated successfully
+
+  # Analytics and Monitoring
+  /analytics/dashboard:
+    get:
+      tags:
+        - Analytics
+      summary: Get platform analytics dashboard
+      description: Retrieve comprehensive platform analytics and metrics
+      operationId: getDashboardAnalytics
+      security:
+        - AdminAuth: []
+      responses:
+        '200':
+          description: Dashboard analytics retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardAnalyticsResponse'
+
+  /health:
+    get:
+      tags:
+        - System
+      summary: Health check endpoint
+      description: Check the health status of the API and connected services
+      operationId: healthCheck
+      responses:
+        '200':
+          description: System is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckResponse'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ValidatorAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Special JWT for authorized validators
+    IssuerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT for authorized carbon credit issuers
+    OracleAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT for authorized oracles
+    AdminAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT for platform administrators
+
+  schemas:
+    # Common Types
+    Address:
+      type: string
+      pattern: '^0x[a-fA-F0-9]{40}$'
+      description: Ethereum address
+      example: "0x742d35Cc6634C0532925a3b8e0F8E6C4b0c5b59B"
+
+    TransactionHash:
+      type: string
+      pattern: '^0x[a-fA-F0-9]{64}$'
+      description: Ethereum transaction hash
+      example: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+
+    # ESG Stablecoin Schemas
+    MintStablecoinRequest:
+      type: object
+      required:
+        - collateralAsset
+        - amount
+        - userAddress
+      properties:
+        collateralAsset:
+          $ref: '#/components/schemas/Address'
+        amount:
+          type: string
+          pattern: '^[0-9]+$'
+          description: Amount to mint in wei
+          example: "1000000000000000000"
+        userAddress:
+          $ref: '#/components/schemas/Address'
+
+    MintStablecoinResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        transactionHash:
+          $ref: '#/components/schemas/TransactionHash'
+        amountMinted:
+          type: string
+          description: Amount minted in wei
+        newPosition:
+          $ref: '#/components/schemas/UserPosition'
+
+    RepayStablecoinRequest:
+      type: object
+      required:
+        - collateralAsset
+        - amount
+        - userAddress
+      properties:
+        collateralAsset:
+          $ref: '#/components/schemas/Address'
+        amount:
+          type: string
+          pattern: '^[0-9]+$'
+          description: Amount to repay in wei
+        userAddress:
+          $ref: '#/components/schemas/Address'
+
+    RepayStablecoinResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        transactionHash:
+          $ref: '#/components/schemas/TransactionHash'
+        amountRepaid:
+          type: string
+        stabilityFee:
+          type: string
+          description: Stability fee charged in wei
+
+    UserPosition:
+      type: object
+      properties:
+        collateralAmount:
+          type: string
+          description: Amount of collateral deposited in wei
+        borrowedAmount:
+          type: string
+          description: Amount of stablecoin borrowed in wei
+        lastUpdate:
+          type: integer
+          description: Last update timestamp
+        isActive:
+          type: boolean
+        collateralRatio:
+          type: string
+          description: Current collateral ratio in basis points
+
+    UserPositionsResponse:
+      type: object
+      properties:
+        userAddress:
+          $ref: '#/components/schemas/Address'
+        positions:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/UserPosition'
+        totalDebt:
+          type: string
+          description: Total debt across all positions in wei
+        esgScore:
+          type: integer
+          minimum: 0
+          maximum: 10000
+          description: User's ESG score out of 10000
+
+    # CBDC Bridge Schemas
+    InitiateBridgeRequest:
+      type: object
+      required:
+        - sourceToken
+        - targetToken
+        - recipient
+        - amount
+        - targetChain
+      properties:
+        sourceToken:
+          $ref: '#/components/schemas/Address'
+        targetToken:
+          $ref: '#/components/schemas/Address'
+        recipient:
+          $ref: '#/components/schemas/Address'
+        amount:
+          type: string
+          pattern: '^[0-9]+$'
+        targetChain:
+          type: integer
+          description: Target chain ID
+          example: 137
+
+    InitiateBridgeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        transactionId:
+          type: string
+          description: Bridge transaction ID
+        estimatedCompletionTime:
+          type: integer
+          description: Estimated completion time in seconds
+        bridgeFee:
+          type: string
+          description: Bridge fee in wei
+
+    CompleteBridgeRequest:
+      type: object
+      required:
+        - transactionId
+        - validatorSignature
+      properties:
+        transactionId:
+          type: string
+        validatorSignature:
+          type: string
+          description: Hex-encoded validator signature
+
+    CompleteBridgeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        transactionHash:
+          $ref: '#/components/schemas/TransactionHash'
+        completedAt:
+          type: integer
+          description: Completion timestamp
+
+    BridgeStatusResponse:
+      type: object
+      properties:
+        transactionId:
+          type: string
+        status:
+          type: string
+          enum: [pending, confirmed, completed, cancelled, failed]
+        sourceChain:
+          type: integer
+        targetChain:
+          type: integer
+        amount:
+          type: string
+        recipient:
+          $ref: '#/components/schemas/Address'
+        createdAt:
+          type: integer
+        completedAt:
+          type: integer
+          nullable: true
+
+    # Carbon Credits Schemas
+    IssueCarbonCreditsRequest:
+      type: object
+      required:
+        - creditId
+        - recipient
+        - amount
+        - vintage
+        - projectType
+      properties:
+        creditId:
+          type: string
+          description: Unique credit identifier
+        recipient:
+          $ref: '#/components/schemas/Address'
+        amount:
+          type: string
+          description: Amount in tonnes of CO2
+        vintage:
+          type: integer
+          minimum: 2020
+          description: Year of credit generation
+        projectType:
+          type: string
+          description: Type of carbon project
+          example: "Reforestation"
+
+    IssueCarbonCreditsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        creditId:
+          type: string
+        transactionHash:
+          $ref: '#/components/schemas/TransactionHash'
+        amountIssued:
+          type: string
+
+    RetireCarbonCreditsRequest:
+      type: object
+      required:
+        - creditId
+        - userAddress
+      properties:
+        creditId:
+          type: string
+        userAddress:
+          $ref: '#/components/schemas/Address'
+
+    RetireCarbonCreditsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        transactionHash:
+          $ref: '#/components/schemas/TransactionHash'
+        retiredAmount:
+          type: string
+
+    CarbonCreditResponse:
+      type: object
+      properties:
+        creditId:
+          type: string
+        issuer:
+          $ref: '#/components/schemas/Address'
+        amount:
+          type: string
+        vintage:
+          type: integer
+        projectType:
+          type: string
+        verified:
+          type: boolean
+        retired:
+          type: boolean
+
+    # Water Credits Schemas
+    RegisterWaterProjectRequest:
+      type: object
+      required:
+        - projectName
+        - location
+        - waterSaved
+        - creditRate
+      properties:
+        projectName:
+          type: string
+          example: "Desert Rainwater Harvesting"
+        location:
+          type: string
+          example: "Arizona, USA"
+        waterSaved:
+          type: string
+          description: Annual water savings in liters
+        creditRate:
+          type: string
+          description: Credits per liter saved
+
+    RegisterWaterProjectResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        projectId:
+          type: integer
+        transactionHash:
+          $ref: '#/components/schemas/TransactionHash'
+
+    VerifyWaterProjectRequest:
+      type: object
+      required:
+        - certificationHash
+      properties:
+        certificationHash:
+          type: string
+          pattern: '^0x[a-fA-F0-9]{64}$'
+          description: Hash of certification document
+
+    IssueWaterCreditsRequest:
+      type: object
+      required:
+        - projectId
+        - amount
+        - recipient
+      properties:
+        projectId:
+          type: integer
+        amount:
+          type: string
+        recipient:
+          $ref: '#/components/schemas/Address'
+
+    # ESG Scoring Schemas
+    ESGScoreResponse:
+      type: object
+      properties:
+        userAddress:
+          $ref: '#/components/schemas/Address'
+        esgScore:
+          type: integer
+          minimum: 0
+          maximum: 10000
+        breakdown:
+          type: object
+          properties:
+            carbonCredits:
+              type: integer
+            waterCredits:
+              type: integer
+            renewableEnergy:
+              type: integer
+            greenBonds:
+              type: integer
+            esgTokens:
+              type: integer
+
+    UpdateESGScoreRequest:
+      type: object
+      required:
+        - userAddress
+        - newScore
+      properties:
+        userAddress:
+          $ref: '#/components/schemas/Address'
+        newScore:
+          type: integer
+          minimum: 0
+          maximum: 10000
+
+    # Analytics Schemas
+    DashboardAnalyticsResponse:
+      type: object
+      properties:
+        totalStablecoinSupply:
+          type: string
+        totalCollateralValue:
+          type: string
+        totalCarbonCredits:
+          type: string
+        totalWaterCredits:
+          type: string
+        activeBridgeTransactions:
+          type: integer
+        averageESGScore:
+          type: number
+        platformMetrics:
+          type: object
+          properties:
+            totalUsers:
+              type: integer
+            totalTransactions:
+              type: integer
+            totalVolume:
+              type: string
+
+    # System Schemas
+    HealthCheckResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+        timestamp:
+          type: string
+          format: date-time
+        services:
+          type: object
+          properties:
+            database:
+              type: string
+              enum: [healthy, unhealthy]
+            blockchain:
+              type: string
+              enum: [healthy, unhealthy]
+            redis:
+              type: string
+              enum: [healthy, unhealthy]
+            oracles:
+              type: string
+              enum: [healthy, unhealthy]
+
+    # Error Schemas
+    Error:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+        timestamp:
+          type: string
+          format: date-time
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "INVALID_REQUEST"
+            message: "Invalid request parameters"
+            timestamp: "2024-01-15T10:30:00Z"
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "UNAUTHORIZED"
+            message: "Authentication required"
+            timestamp: "2024-01-15T10:30:00Z"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "NOT_FOUND"
+            message: "Resource not found"
+            timestamp: "2024-01-15T10:30:00Z"
+
+    RateLimitExceeded:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "RATE_LIMIT_EXCEEDED"
+            message: "Too many requests"
+            timestamp: "2024-01-15T10:30:00Z"
+
+tags:
+  - name: ESG Stablecoin
+    description: ESG-backed stablecoin operations
+  - name: CBDC Bridge
+    description: Cross-chain CBDC bridge operations
+  - name: Carbon Credits
+    description: Carbon credit tokenization and trading
+  - name: Water Credits
+    description: Water conservation credit management
+  - name: ESG Scoring
+    description: ESG scoring and analytics
+  - name: Analytics
+    description: Platform analytics and metrics
+  - name: System
+    description: System health and monitoring

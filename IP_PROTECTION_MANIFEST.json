@@ -1,0 +1,1800 @@
+{
+  "projectName": "Unykorn ESG Tokenization System",
+  "version": "1.0.0",
+  "timestamp": "2025-08-25T03:59:33.242Z",
+  "files": [
+    {
+      "path": ".claude/agents/MIGRATION_SUMMARY.md",
+      "size": 7181,
+      "hash": "d31dcdba94756ed3d0e57e74d6534ddcac4d13cbd161b80e1e969611e399b594",
+      "lastModified": "2025-08-24T16:33:57.084Z"
+    },
+    {
+      "path": ".claude/agents/README.md",
+      "size": 2890,
+      "hash": "9cdc0cdf772b6a7f15a4f4fa418ae2f5cb3c325046f27e470dada96516a11b91",
+      "lastModified": "2025-08-24T16:33:57.087Z"
+    },
+    {
+      "path": ".claude/agents/analysis/code-analyzer.md",
+      "size": 5740,
+      "hash": "259bd298e1f6cf297ab5354e4701bec9cf0020bc22a66bba96c09cc580af47f0",
+      "lastModified": "2025-08-24T16:33:57.090Z"
+    },
+    {
+      "path": ".claude/agents/analysis/code-review/analyze-code-quality.md",
+      "size": 4595,
+      "hash": "b865110a1694598fcfa9c1eb319014eb87461df35aaaaa6c820a41a5535346ad",
+      "lastModified": "2025-08-24T16:33:57.093Z"
+    },
+    {
+      "path": ".claude/agents/architecture/system-design/arch-system-design.md",
+      "size": 4795,
+      "hash": "7330ff870b23d2d6c05a415fdd9cc7ee6ff49a2cc48a33eb1962b830106abf3b",
+      "lastModified": "2025-08-24T16:33:57.096Z"
+    },
+    {
+      "path": ".claude/agents/base-template-generator.md",
+      "size": 3836,
+      "hash": "4b957343021823020828d6d213126243bad177f29984fc09545814b88fcfa87a",
+      "lastModified": "2025-08-24T16:33:57.099Z"
+    },
+    {
+      "path": ".claude/agents/consensus/README.md",
+      "size": 9023,
+      "hash": "2a1a1c8c495e81e107001760179968591ab24641f3834e92dd739e198e4d7e2d",
+      "lastModified": "2025-08-24T16:33:57.101Z"
+    },
+    {
+      "path": ".claude/agents/consensus/byzantine-coordinator.md",
+      "size": 2314,
+      "hash": "5c1dab70fccda87e6fdc2fbd221258e8a51530db3c78833c24cebeb19687c4d2",
+      "lastModified": "2025-08-24T16:33:57.103Z"
+    },
+    {
+      "path": ".claude/agents/consensus/crdt-synchronizer.md",
+      "size": 25026,
+      "hash": "b0ca8c4f4237d0f1bd3d81ac5db859857906ca34ab210d6964f332733c030fa5",
+      "lastModified": "2025-08-24T16:33:57.105Z"
+    },
+    {
+      "path": ".claude/agents/consensus/gossip-coordinator.md",
+      "size": 2386,
+      "hash": "946d66b6f530ae6eaed102e5d677ab5c3bd2806b6d2b274c17343c77de70cc40",
+      "lastModified": "2025-08-24T16:33:57.106Z"
+    },
+    {
+      "path": ".claude/agents/consensus/performance-benchmarker.md",
+      "size": 27227,
+      "hash": "7084eeadbde4f080ee4babb4d6b58abd23845b021eadf6feae68aa0addf97ff6",
+      "lastModified": "2025-08-24T16:33:57.109Z"
+    },
+    {
+      "path": ".claude/agents/consensus/quorum-manager.md",
+      "size": 27992,
+      "hash": "9902ac56027d24895b8439f54cc0f8baba8bad331cf5f99e2922c781c6c6ffb0",
+      "lastModified": "2025-08-24T16:33:57.111Z"
+    },
+    {
+      "path": ".claude/agents/consensus/raft-manager.md",
+      "size": 2278,
+      "hash": "fbf05a0e1d8bccc39ed8751449b805d151e8b5d85069a9ed90028b7631b7dfa5",
+      "lastModified": "2025-08-24T16:33:57.113Z"
+    },
+    {
+      "path": ".claude/agents/consensus/security-manager.md",
+      "size": 19631,
+      "hash": "368a57778c93da14e2581ae9835a03458d3db50659694078a213d3f25b87747c",
+      "lastModified": "2025-08-24T16:33:57.114Z"
+    },
+    {
+      "path": ".claude/agents/core/coder.md",
+      "size": 5239,
+      "hash": "fd11f4cf99f74e7db021947e0ecc10f8fd3e5afb357433bcf68058905abf0116",
+      "lastModified": "2025-08-24T16:33:57.117Z"
+    },
+    {
+      "path": ".claude/agents/core/planner.md",
+      "size": 3353,
+      "hash": "1ea85a5cf770f62e7e40e612be9fc5d779dd265f77fa942ee6f8d1c3950127c3",
+      "lastModified": "2025-08-24T16:33:57.119Z"
+    },
+    {
+      "path": ".claude/agents/core/researcher.md",
+      "size": 4039,
+      "hash": "e486075522aef212f49ab79659130521fe362779daf0919fac17f2d1f16576a6",
+      "lastModified": "2025-08-24T16:33:57.120Z"
+    },
+    {
+      "path": ".claude/agents/core/reviewer.md",
+      "size": 6618,
+      "hash": "664518900259644124b28d4b0e92be3ca139fa391920fc0e97b309649bc093fd",
+      "lastModified": "2025-08-24T16:33:57.123Z"
+    },
+    {
+      "path": ".claude/agents/core/tester.md",
+      "size": 7367,
+      "hash": "26f05967316ebbda9b96b7262fe80500d158fcd2f75f1adba1d28c99d882f6e7",
+      "lastModified": "2025-08-24T16:33:57.125Z"
+    },
+    {
+      "path": ".claude/agents/data/ml/data-ml-model.md",
+      "size": 5181,
+      "hash": "8c1fb32efa0398db5eb760f777f681b37aeb1eff4f1d8bf4878d3510688dff37",
+      "lastModified": "2025-08-24T16:33:57.129Z"
+    },
+    {
+      "path": ".claude/agents/development/backend/dev-backend-api.md",
+      "size": 3660,
+      "hash": "3f537db3650f3916c31b124d5c5acab9dedc92eecc051093a7c6995536eac53f",
+      "lastModified": "2025-08-24T16:33:57.132Z"
+    },
+    {
+      "path": ".claude/agents/devops/ci-cd/ops-cicd-github.md",
+      "size": 4475,
+      "hash": "daa1ca3b2e116167dd4d057b64d96bd40c00bfd1d6a3ad3c607dd9129db7a032",
+      "lastModified": "2025-08-24T16:33:57.136Z"
+    },
+    {
+      "path": ".claude/agents/documentation/api-docs/docs-api-openapi.md",
+      "size": 4594,
+      "hash": "0cec8892de681a157cb3d56af8e336020dae58ec4a51c0e1dcaf6cfd90c61cd7",
+      "lastModified": "2025-08-24T16:33:57.138Z"
+    },
+    {
+      "path": ".claude/agents/github/code-review-swarm.md",
+      "size": 12066,
+      "hash": "67e5d852bd6e697181e8a8005b79aeea6a9134719205ea5a5f1db871301fcf38",
+      "lastModified": "2025-08-24T16:33:57.140Z"
+    },
+    {
+      "path": ".claude/agents/github/github-modes.md",
+      "size": 6665,
+      "hash": "2640c10081fbcf319851b6c21fe017c9dcd1e91927e186d78ce529ef3378af53",
+      "lastModified": "2025-08-24T16:33:57.142Z"
+    },
+    {
+      "path": ".claude/agents/github/issue-tracker.md",
+      "size": 9350,
+      "hash": "4f0aafcc24b782609f1ed884b3f11e67f56b4330b11c9261a81ca36024f6ad93",
+      "lastModified": "2025-08-24T16:33:57.145Z"
+    },
+    {
+      "path": ".claude/agents/github/multi-repo-swarm.md",
+      "size": 12748,
+      "hash": "ad97b07503626a5d18a2b501654a6861bcea32e6a4f3420b793b0515256f56ab",
+      "lastModified": "2025-08-24T16:33:57.147Z"
+    },
+    {
+      "path": ".claude/agents/github/pr-manager.md",
+      "size": 6099,
+      "hash": "76cbd4516ad348be7d5858069742609b02181f87ca61e3d0dba10c2b1e86ed31",
+      "lastModified": "2025-08-24T16:33:57.149Z"
+    },
+    {
+      "path": ".claude/agents/github/project-board-sync.md",
+      "size": 11367,
+      "hash": "11bddc3cf40ea4ad31aa143af76fd1e33aad29fdfe6f322db85da95209bdb156",
+      "lastModified": "2025-08-24T16:33:57.150Z"
+    },
+    {
+      "path": ".claude/agents/github/release-manager.md",
+      "size": 12365,
+      "hash": "ad58b0baa5d1afa0cad030d4c41ade44bb5068352912caedd2d4af411151c4ea",
+      "lastModified": "2025-08-24T16:33:57.152Z"
+    },
+    {
+      "path": ".claude/agents/github/release-swarm.md",
+      "size": 13914,
+      "hash": "465ac946bf8e29af35231180389c6a1b5f0ada36328d53cbe1ed92718726cb4b",
+      "lastModified": "2025-08-24T16:33:57.153Z"
+    },
+    {
+      "path": ".claude/agents/github/repo-architect.md",
+      "size": 12367,
+      "hash": "6dfbf90adda13ffe1cdde9e51cce765ed0ac0cad47e7060345e1b77d2dec93dd",
+      "lastModified": "2025-08-24T16:33:57.154Z"
+    },
+    {
+      "path": ".claude/agents/github/swarm-issue.md",
+      "size": 14343,
+      "hash": "8ffcffce17a6010df2837c6672698d7181c71fafb5b03233d981a6d4d9f87a3f",
+      "lastModified": "2025-08-24T16:33:57.155Z"
+    },
+    {
+      "path": ".claude/agents/github/swarm-pr.md",
+      "size": 11171,
+      "hash": "43f699ef0cf9fec369b4a1fb323a0476b6847034d515e6f75c51d656cd302c2a",
+      "lastModified": "2025-08-24T16:33:57.156Z"
+    },
+    {
+      "path": ".claude/agents/github/sync-coordinator.md",
+      "size": 16089,
+      "hash": "36bc5d88b80311ff797c49fa19f2c99fd57b0e60fde49a7da759a6a8fe118f37",
+      "lastModified": "2025-08-24T16:33:57.159Z"
+    },
+    {
+      "path": ".claude/agents/github/workflow-automation.md",
+      "size": 15861,
+      "hash": "682564eb0893e54a1f8c01ddd611f408ac6e747c2fc9b5b3d86570617bf7f674",
+      "lastModified": "2025-08-24T16:33:57.161Z"
+    },
+    {
+      "path": ".claude/agents/optimization/README.md",
+      "size": 10682,
+      "hash": "8c19211c0ffb49f7df48d98cdebe5381c645eacbe3beafb5a7eb54887f7e508a",
+      "lastModified": "2025-08-24T16:33:57.163Z"
+    },
+    {
+      "path": ".claude/agents/optimization/benchmark-suite.md",
+      "size": 19447,
+      "hash": "43f92ab26091425f0c2c6b66c6baf6025b5a9b01d594fa648751a7b4e7e7161b",
+      "lastModified": "2025-08-24T16:33:57.165Z"
+    },
+    {
+      "path": ".claude/agents/optimization/load-balancer.md",
+      "size": 12075,
+      "hash": "2dad5e0b70df64383cb1a1392b9d778f3d9dff88e723fbe14c3b7c24c9a628d8",
+      "lastModified": "2025-08-24T16:33:57.167Z"
+    },
+    {
+      "path": ".claude/agents/optimization/performance-monitor.md",
+      "size": 19393,
+      "hash": "e32b0078e099426410bd1e0bad1dabc57f52c721363defe96292945ed97d084f",
+      "lastModified": "2025-08-24T16:33:57.168Z"
+    },
+    {
+      "path": ".claude/agents/optimization/resource-allocator.md",
+      "size": 19224,
+      "hash": "f9590ea579eb31661b25915977f49cda0e87f793898ba0560168e23acf66974e",
+      "lastModified": "2025-08-24T16:33:57.169Z"
+    },
+    {
+      "path": ".claude/agents/optimization/topology-optimizer.md",
+      "size": 24380,
+      "hash": "01c08cfe8edf9424640ec6df44171cac31aee665d6716a4d2a97c82f04f2956f",
+      "lastModified": "2025-08-24T16:33:57.170Z"
+    },
+    {
+      "path": ".claude/agents/sparc/architecture.md",
+      "size": 10884,
+      "hash": "59263ab4b8919f974feb893b768faca84412de07812d71262335854d81ba438b",
+      "lastModified": "2025-08-24T16:33:57.171Z"
+    },
+    {
+      "path": ".claude/agents/sparc/pseudocode.md",
+      "size": 8360,
+      "hash": "428447d6a67d396f704e8ba7fdbba3c719f7c5840052b54dccb5763022a2953a",
+      "lastModified": "2025-08-24T16:33:57.172Z"
+    },
+    {
+      "path": ".claude/agents/sparc/refinement.md",
+      "size": 13765,
+      "hash": "dae546273f899c40c3c76554b56572bf071d0d43743db66e6cb63f2923678e8e",
+      "lastModified": "2025-08-24T16:33:57.174Z"
+    },
+    {
+      "path": ".claude/agents/sparc/specification.md",
+      "size": 6996,
+      "hash": "57bbdfa8b058a1fccffbe8a99a59570b4bad955a669cf7b22ee77e292b7a56e2",
+      "lastModified": "2025-08-24T16:33:57.175Z"
+    },
+    {
+      "path": ".claude/agents/specialized/mobile/spec-mobile-react-native.md",
+      "size": 5540,
+      "hash": "42ff01c39ef5eed2d99ce98400e412897f31e02291bd7cf363703bdc96f7565f",
+      "lastModified": "2025-08-24T16:33:57.177Z"
+    },
+    {
+      "path": ".claude/agents/swarm/README.md",
+      "size": 6860,
+      "hash": "e71d76b0eb3f465c85c8446d8204352516b5eac7b02f485262da7bd5634d8f96",
+      "lastModified": "2025-08-24T16:33:57.178Z"
+    },
+    {
+      "path": ".claude/agents/swarm/adaptive-coordinator.md",
+      "size": 15930,
+      "hash": "66a0e018b528c166df319782c191930da9b27c5346dbcf1e92782d7765f8488b",
+      "lastModified": "2025-08-24T16:33:57.179Z"
+    },
+    {
+      "path": ".claude/agents/swarm/hierarchical-coordinator.md",
+      "size": 9089,
+      "hash": "92a0ae205f0fe06ce1ef0beabb9a2d4f4aa3fc5aa6f3f7c7a23f3807c8a17052",
+      "lastModified": "2025-08-24T16:33:57.181Z"
+    },
+    {
+      "path": ".claude/agents/swarm/mesh-coordinator.md",
+      "size": 12861,
+      "hash": "70207b48ac6df8fcd3c9a0b5f62e87f382e5fd9fc1d15ae984ae426cc760b7b1",
+      "lastModified": "2025-08-24T16:33:57.183Z"
+    },
+    {
+      "path": ".claude/agents/templates/automation-smart-agent.md",
+      "size": 5335,
+      "hash": "51be95aec74dbf48091e24949c52164596dd3be86b2e64240df62d9ad4e7de27",
+      "lastModified": "2025-08-24T16:33:57.185Z"
+    },
+    {
+      "path": ".claude/agents/templates/coordinator-swarm-init.md",
+      "size": 2809,
+      "hash": "421637362dff0cb718b59789d034abbecab885b9748991f37f717a2ba4e7effe",
+      "lastModified": "2025-08-24T16:33:57.187Z"
+    },
+    {
+      "path": ".claude/agents/templates/github-pr-manager.md",
+      "size": 4501,
+      "hash": "6fdc7f9fb9b96ae659ef3fe03168f4ff769517e1acf467d1a130739f23914b04",
+      "lastModified": "2025-08-24T16:33:57.188Z"
+    },
+    {
+      "path": ".claude/agents/templates/implementer-sparc-coder.md",
+      "size": 6511,
+      "hash": "557129b56ec9569d55cfac9432a9288c5debd0b0f354640a19dacf14b4bc9e4e",
+      "lastModified": "2025-08-24T16:33:57.189Z"
+    },
+    {
+      "path": ".claude/agents/templates/memory-coordinator.md",
+      "size": 4504,
+      "hash": "8aeb10fad6f517a3cd0f6b2d48012880df1a6366f2e5a16db1ff9457385d169a",
+      "lastModified": "2025-08-24T16:33:57.191Z"
+    },
+    {
+      "path": ".claude/agents/templates/migration-plan.md",
+      "size": 18313,
+      "hash": "4e7bbd95b2685f79388d8d1a589da20159270ce7473b2b77fae79c50ad19ecb3",
+      "lastModified": "2025-08-24T16:33:57.193Z"
+    },
+    {
+      "path": ".claude/agents/templates/orchestrator-task.md",
+      "size": 4013,
+      "hash": "4af1f8472260fb40d63c15638ed004c0c702349c0c2f1a949eceb05061731157",
+      "lastModified": "2025-08-24T16:33:57.195Z"
+    },
+    {
+      "path": ".claude/agents/templates/performance-analyzer.md",
+      "size": 5208,
+      "hash": "97e3cff2daf0fc27f193533e6234a9b987a885418c21934069b9076b36959022",
+      "lastModified": "2025-08-24T16:33:57.196Z"
+    },
+    {
+      "path": ".claude/agents/templates/sparc-coordinator.md",
+      "size": 4642,
+      "hash": "41a8ed5dde643fc07123902e0555f1089a4cdab711f484b95092d5e4cf7f62fd",
+      "lastModified": "2025-08-24T16:33:57.198Z"
+    },
+    {
+      "path": ".claude/agents/testing/unit/tdd-london-swarm.md",
+      "size": 7016,
+      "hash": "1157ccd19576639d09be1192f0762a4b81429b92f774a7ebfaef7fdb65415f9c",
+      "lastModified": "2025-08-24T16:33:57.199Z"
+    },
+    {
+      "path": ".claude/agents/testing/validation/production-validator.md",
+      "size": 11738,
+      "hash": "2290d706d92b5248ccdb8c656e928d3f8edb213c9ffbe05d3f0e645b44280925",
+      "lastModified": "2025-08-24T16:33:57.201Z"
+    },
+    {
+      "path": ".claude/commands/agents/README.md",
+      "size": 260,
+      "hash": "52f50d320ed2058cc815a836530e43cba4511df56eb9edac8837b922339fcbd7",
+      "lastModified": "2025-08-24T16:33:15.574Z"
+    },
+    {
+      "path": ".claude/commands/agents/agent-capabilities.md",
+      "size": 585,
+      "hash": "1fa62c27d0e4b9969e7394c1cbbcfd92ecb95750f66ea67204ad10de7b9a7223",
+      "lastModified": "2025-08-24T16:33:15.575Z"
+    },
+    {
+      "path": ".claude/commands/agents/agent-coordination.md",
+      "size": 545,
+      "hash": "7b6f421214b0dfd6402d0fcd17c78059806648618b312aadf496e54ed4ec2a75",
+      "lastModified": "2025-08-24T16:33:15.576Z"
+    },
+    {
+      "path": ".claude/commands/agents/agent-spawning.md",
+      "size": 727,
+      "hash": "74bfe922137a05922a5d936c2bdc9fa4aef8972e2a8a5b18f59bad08aee2bfee",
+      "lastModified": "2025-08-24T16:33:15.576Z"
+    },
+    {
+      "path": ".claude/commands/agents/agent-types.md",
+      "size": 713,
+      "hash": "d791bef16a138c8f903a5ad73dfbf58ade712295531e62df85737c455cd1e949",
+      "lastModified": "2025-08-24T16:33:15.575Z"
+    },
+    {
+      "path": ".claude/commands/analysis/README.md",
+      "size": 222,
+      "hash": "e65e139f07695b2a92e14dc07bf63bd9a915006bb66b0e624c9cebb5d17ca0cf",
+      "lastModified": "2025-08-24T16:33:15.496Z"
+    },
+    {
+      "path": ".claude/commands/analysis/bottleneck-detect.md",
+      "size": 3541,
+      "hash": "2873e9bdeb14a9c6abe69ed61a36c616f2bcb838f60ff6473364aafe3cbf3de9",
+      "lastModified": "2025-08-24T16:33:15.498Z"
+    },
+    {
+      "path": ".claude/commands/analysis/performance-report.md",
+      "size": 623,
+      "hash": "e67bea8ba6dad22bdc4245cd71767ceaf15169ce19ef7dd9c7f1d50ea05b92d3",
+      "lastModified": "2025-08-24T16:33:15.500Z"
+    },
+    {
+      "path": ".claude/commands/analysis/token-usage.md",
+      "size": 566,
+      "hash": "cbadb3c474d7ad11a4d4a5b17fcd0f147ddd00981e2c81bdbe82b41633b53ddd",
+      "lastModified": "2025-08-24T16:33:15.499Z"
+    },
+    {
+      "path": ".claude/commands/automation/README.md",
+      "size": 206,
+      "hash": "21aaf8198cc8675d5dc87b355f269507c6cf41d82f3d8cc993b1388cc5957731",
+      "lastModified": "2025-08-24T16:33:15.501Z"
+    },
+    {
+      "path": ".claude/commands/automation/auto-agent.md",
+      "size": 2576,
+      "hash": "40f23f854dc0fbe507b8dcd38e4b428e794be3fc78a4e438bcc86f05528e3ccf",
+      "lastModified": "2025-08-24T16:33:15.503Z"
+    },
+    {
+      "path": ".claude/commands/automation/smart-spawn.md",
+      "size": 533,
+      "hash": "f0a60dcc2d045684c15046b16a72464f2629a0a75a05030aa9b7260e1e55d976",
+      "lastModified": "2025-08-24T16:33:15.504Z"
+    },
+    {
+      "path": ".claude/commands/automation/workflow-select.md",
+      "size": 620,
+      "hash": "296b3c5dc6316f581840ff038982518aa10b1ca45badf2abee4efeff039a0a64",
+      "lastModified": "2025-08-24T16:33:15.506Z"
+    },
+    {
+      "path": ".claude/commands/claude-flow-help.md",
+      "size": 3626,
+      "hash": "c809baa408eacad3279b65e960dc1323711cb30b36b6561949dde578d838016f",
+      "lastModified": "2025-08-24T16:33:30.066Z"
+    },
+    {
+      "path": ".claude/commands/claude-flow-memory.md",
+      "size": 2829,
+      "hash": "0cbeed7c94dc2f5417d1ed2749d52197953fd9a6a8933b8121c0b812d69abd74",
+      "lastModified": "2025-08-24T16:33:30.066Z"
+    },
+    {
+      "path": ".claude/commands/claude-flow-swarm.md",
+      "size": 5277,
+      "hash": "14778c8413d94b8dc36382073968da5aa4dbd08cd60d46ceeef3818936a1469c",
+      "lastModified": "2025-08-24T16:33:30.067Z"
+    },
+    {
+      "path": ".claude/commands/coordination/README.md",
+      "size": 212,
+      "hash": "29aa91173843abe596cf754984aa5622df1fb01beada6e6f3a6a3acc3eaa06b8",
+      "lastModified": "2025-08-24T16:33:15.508Z"
+    },
+    {
+      "path": ".claude/commands/coordination/agent-spawn.md",
+      "size": 573,
+      "hash": "3e8a074103c9038b70afd801e567ebf4a1f5f6d0e2f29337c37fab89a985c28d",
+      "lastModified": "2025-08-24T16:33:15.510Z"
+    },
+    {
+      "path": ".claude/commands/coordination/swarm-init.md",
+      "size": 2045,
+      "hash": "adb339d9277870281f41472d30719e7e7df5a1d7ee5b5dfb78849d525d91b607",
+      "lastModified": "2025-08-24T16:33:15.509Z"
+    },
+    {
+      "path": ".claude/commands/coordination/task-orchestrate.md",
+      "size": 638,
+      "hash": "900ea2e5024c875bb9f803d1b6be38db685e1426873812580b17050477804b28",
+      "lastModified": "2025-08-24T16:33:15.511Z"
+    },
+    {
+      "path": ".claude/commands/github/README.md",
+      "size": 264,
+      "hash": "4fb6c4348f6f8c2d5c252203115942a770743e5e7eb4c696e2d359916050948c",
+      "lastModified": "2025-08-24T16:33:15.515Z"
+    },
+    {
+      "path": ".claude/commands/github/code-review.md",
+      "size": 558,
+      "hash": "c1bc7608b43aa1ee100d29795d369bef0df6cac114d94c30b42c206038c84be2",
+      "lastModified": "2025-08-24T16:33:15.520Z"
+    },
+    {
+      "path": ".claude/commands/github/github-swarm.md",
+      "size": 2416,
+      "hash": "8af56205449b4c82e546901c6ffca10f122619757bf50aaed7b70bf43a6b8bca",
+      "lastModified": "2025-08-24T16:33:15.516Z"
+    },
+    {
+      "path": ".claude/commands/github/issue-triage.md",
+      "size": 583,
+      "hash": "c0d647e0dfe4d16a746a295bde36ff2f6ebef3931387393c9a461c741b90aef0",
+      "lastModified": "2025-08-24T16:33:15.519Z"
+    },
+    {
+      "path": ".claude/commands/github/pr-enhance.md",
+      "size": 550,
+      "hash": "b295761f0a6f2eff72c27d66803c534b7e3ad4f4e6482bd516cd6065f8c6eff4",
+      "lastModified": "2025-08-24T16:33:15.518Z"
+    },
+    {
+      "path": ".claude/commands/github/repo-analyze.md",
+      "size": 604,
+      "hash": "7c57c22d09ee9a7eea693a606e189a4f2d04e00f5f92120b73afdeb8e95e2f11",
+      "lastModified": "2025-08-24T16:33:15.517Z"
+    },
+    {
+      "path": ".claude/commands/hive-mind/README.md",
+      "size": 568,
+      "hash": "fa9fd39a53ee30b6ca4e9ea9a2242006ceeee8b0c05150a099a5761ceda5bfd7",
+      "lastModified": "2025-08-24T16:33:15.565Z"
+    },
+    {
+      "path": ".claude/commands/hive-mind/hive-mind-consensus.md",
+      "size": 168,
+      "hash": "f506ae557ab8ae1211a36ceb14ddd3c98d27318e01646d007e73b2da0ef04b64",
+      "lastModified": "2025-08-24T16:33:15.572Z"
+    },
+    {
+      "path": ".claude/commands/hive-mind/hive-mind-init.md",
+      "size": 319,
+      "hash": "202b192697c8b3d0b324ba29825f1f42be46951eb933f9434bc83eae9c58b130",
+      "lastModified": "2025-08-24T16:33:15.565Z"
+    },
+    {
+      "path": ".claude/commands/hive-mind/hive-mind-memory.md",
+      "size": 159,
+      "hash": "6440952bb78ade613b539d45395411476fcf21b7b7ca32d9724011462fa89555",
+      "lastModified": "2025-08-24T16:33:15.573Z"
+    },
+    {
+      "path": ".claude/commands/hive-mind/hive-mind-metrics.md",
+      "size": 162,
+      "hash": "7bd9ba42a3b28791ed76d584a2dd824e46175135f856274d88928523e37c2dd4",
+      "lastModified": "2025-08-24T16:33:15.573Z"
+    },
+    {
+      "path": ".claude/commands/hive-mind/hive-mind-resume.md",
+      "size": 159,
+      "hash": "716670daf4e2757aec3c874cf61612fd668cfb42b256b048aed2327ae77960ac",
+      "lastModified": "2025-08-24T16:33:15.569Z"
+    },
+    {
+      "path": ".claude/commands/hive-mind/hive-mind-sessions.md",
+      "size": 165,
+      "hash": "7b5c90405bc6cb32cfc95f5ac47e4f57a4be65a042d301a2212ca95247e5466a",
+      "lastModified": "2025-08-24T16:33:15.571Z"
+    },
+    {
+      "path": ".claude/commands/hive-mind/hive-mind-spawn.md",
+      "size": 571,
+      "hash": "5f4c315d23a38b211655fefa0d12c03a2d04ac8de1d32beb1cc658df300f8fc7",
+      "lastModified": "2025-08-24T16:33:15.566Z"
+    },
+    {
+      "path": ".claude/commands/hive-mind/hive-mind-status.md",
+      "size": 159,
+      "hash": "b387fc232a0ff6755aa28b62e75f53df063fcc654bb608eacdaa67d8203df9a2",
+      "lastModified": "2025-08-24T16:33:15.568Z"
+    },
+    {
+      "path": ".claude/commands/hive-mind/hive-mind-stop.md",
+      "size": 153,
+      "hash": "5ff4c4b1a9bb4ceb854549bcab62d2228d05774bd6ea3cec143f8eea2bc7d393",
+      "lastModified": "2025-08-24T16:33:15.570Z"
+    },
+    {
+      "path": ".claude/commands/hive-mind/hive-mind-wizard.md",
+      "size": 159,
+      "hash": "d817d8e6a38be631ccab63f25602987e3a5abd0960bd0780a8461603ece0f51c",
+      "lastModified": "2025-08-24T16:33:15.574Z"
+    },
+    {
+      "path": ".claude/commands/hive-mind/hive-mind.md",
+      "size": 546,
+      "hash": "fd8ec282509eb2ab03a429877f3b2084b9fb4cf719f0bbaca4fb7c33baf0cf96",
+      "lastModified": "2025-08-24T16:33:15.565Z"
+    },
+    {
+      "path": ".claude/commands/hooks/README.md",
+      "size": 238,
+      "hash": "d9812b07a1884271dbb1615642f3047d3624c879fb997455869e75220a31feb9",
+      "lastModified": "2025-08-24T16:33:15.524Z"
+    },
+    {
+      "path": ".claude/commands/hooks/post-edit.md",
+      "size": 2274,
+      "hash": "d4cc912712e413c7fa613f1f681dbadede8a75a1df8012c25b703fa9be339307",
+      "lastModified": "2025-08-24T16:33:15.535Z"
+    },
+    {
+      "path": ".claude/commands/hooks/post-task.md",
+      "size": 2207,
+      "hash": "1859b9ed7ae42ddfc74bf0ff73e2f22e86489d7d4287097598c5d73966d3e6e4",
+      "lastModified": "2025-08-24T16:33:15.531Z"
+    },
+    {
+      "path": ".claude/commands/hooks/pre-edit.md",
+      "size": 2201,
+      "hash": "43d0a4f70b4ad32a86f7c584469197bcd678b2c2e51443a4284a7c0617e60bd1",
+      "lastModified": "2025-08-24T16:33:15.533Z"
+    },
+    {
+      "path": ".claude/commands/hooks/pre-task.md",
+      "size": 2200,
+      "hash": "93597737b83efcfe086c26ed9f1cb5131563ad5a0e24ae042a53f30e9087fa4a",
+      "lastModified": "2025-08-24T16:33:15.529Z"
+    },
+    {
+      "path": ".claude/commands/hooks/session-end.md",
+      "size": 2180,
+      "hash": "6b34a5b3d63d0b097867d4705087753f28d32507977c0df9b64729356263e3d5",
+      "lastModified": "2025-08-24T16:33:15.541Z"
+    },
+    {
+      "path": ".claude/commands/memory/README.md",
+      "size": 204,
+      "hash": "1df3b5a0470191642b944e01966deb3662facce5cd88ecbf5ed89a9d29d2e0fd",
+      "lastModified": "2025-08-24T16:33:15.543Z"
+    },
+    {
+      "path": ".claude/commands/memory/memory-persist.md",
+      "size": 497,
+      "hash": "b962c602dd2f4053a7a4c018433db5591f404cc5a30f006e2ea2f8a554b2b193",
+      "lastModified": "2025-08-24T16:33:15.545Z"
+    },
+    {
+      "path": ".claude/commands/memory/memory-search.md",
+      "size": 467,
+      "hash": "1a0991dd1043aca5000cc83c92c7982530531f9410b8abe03e4784c0bd7c773c",
+      "lastModified": "2025-08-24T16:33:15.545Z"
+    },
+    {
+      "path": ".claude/commands/memory/memory-usage.md",
+      "size": 534,
+      "hash": "2065a48d2bbb0fa990726b7fe7e6f1f498c47a198349a792bf6a45e2bfcd904b",
+      "lastModified": "2025-08-24T16:33:15.544Z"
+    },
+    {
+      "path": ".claude/commands/monitoring/README.md",
+      "size": 214,
+      "hash": "49fcdc033edfc65b136363ceca63323c5069c9c64b54b8ba5c814fb3631363b7",
+      "lastModified": "2025-08-24T16:33:15.546Z"
+    },
+    {
+      "path": ".claude/commands/monitoring/agent-metrics.md",
+      "size": 430,
+      "hash": "f555846d8eb28eb00717aa99794a01c6102bdadcd047f7715404257cb2b4468d",
+      "lastModified": "2025-08-24T16:33:15.547Z"
+    },
+    {
+      "path": ".claude/commands/monitoring/real-time-view.md",
+      "size": 500,
+      "hash": "5d1abdd5aaf2c11e053716c992b839f21b4be70327cc0c30ce3e1f4b9144244d",
+      "lastModified": "2025-08-24T16:33:15.548Z"
+    },
+    {
+      "path": ".claude/commands/monitoring/swarm-monitor.md",
+      "size": 428,
+      "hash": "898bf4d84898078958371745f6a9d232708076484fc86ca0e3b47fd829708a3a",
+      "lastModified": "2025-08-24T16:33:15.547Z"
+    },
+    {
+      "path": ".claude/commands/optimization/README.md",
+      "size": 228,
+      "hash": "e398abe1a335dba3501ca730388aa77de2392492bd7173d495ceaab309a5f423",
+      "lastModified": "2025-08-24T16:33:15.549Z"
+    },
+    {
+      "path": ".claude/commands/optimization/cache-manage.md",
+      "size": 525,
+      "hash": "6dc3e531dbbe6d5959593700a1cedf13d75c00734857d839ea9e23a0a2c6d25a",
+      "lastModified": "2025-08-24T16:33:15.550Z"
+    },
+    {
+      "path": ".claude/commands/optimization/parallel-execute.md",
+      "size": 585,
+      "hash": "d00383faea9903fcf3b4ced374f6c970cd459e440367183eb78f82eab9c7de61",
+      "lastModified": "2025-08-24T16:33:15.550Z"
+    },
+    {
+      "path": ".claude/commands/optimization/topology-optimize.md",
+      "size": 570,
+      "hash": "1824a0fda02b2499d046b14cff208fe41dc4b6823810873047eac55e72ec0899",
+      "lastModified": "2025-08-24T16:33:15.549Z"
+    },
+    {
+      "path": ".claude/commands/sparc/architect.md",
+      "size": 2284,
+      "hash": "491903fd009dfa01f00b9180fdab84a91ddaf36544fa69045cf4cfa879164ac5",
+      "lastModified": "2025-08-24T16:33:30.040Z"
+    },
+    {
+      "path": ".claude/commands/sparc/ask.md",
+      "size": 2658,
+      "hash": "2d785fada820f6ebfbfc276c6315deea64ab63435890ab93ea050f486151802a",
+      "lastModified": "2025-08-24T16:33:30.058Z"
+    },
+    {
+      "path": ".claude/commands/sparc/code.md",
+      "size": 2653,
+      "hash": "9e97586f1a5f7226c5586457aa4151576561105009cf2d39ded69ca43496bdcd",
+      "lastModified": "2025-08-24T16:33:30.049Z"
+    },
+    {
+      "path": ".claude/commands/sparc/debug.md",
+      "size": 2220,
+      "hash": "b5d5309737df69217bfd35768f44f13e69b0ff99ad1abbe400ceb3769024b11f",
+      "lastModified": "2025-08-24T16:33:30.052Z"
+    },
+    {
+      "path": ".claude/commands/sparc/devops.md",
+      "size": 3287,
+      "hash": "53f0b8e21e44ad36d949b519202a91d588fd98880e0cf6b2a9bfcf3d640d11a5",
+      "lastModified": "2025-08-24T16:33:30.058Z"
+    },
+    {
+      "path": ".claude/commands/sparc/docs-writer.md",
+      "size": 2195,
+      "hash": "564dfa75728e5c2810dc206a682eb5c81c82f10cbffb85dbf9b98b27c7dabdee",
+      "lastModified": "2025-08-24T16:33:30.054Z"
+    },
+    {
+      "path": ".claude/commands/sparc/integration.md",
+      "size": 2356,
+      "hash": "dc08bda49831d7bf7ca6069bebe24ea278436a2f08aa7fb07311a2d174c116cc",
+      "lastModified": "2025-08-24T16:33:30.055Z"
+    },
+    {
+      "path": ".claude/commands/sparc/mcp.md",
+      "size": 3563,
+      "hash": "c0a68234d8cd14ee6e8e29c44560ed1dcdeeb592a51e3f101abc53495e1b7b0c",
+      "lastModified": "2025-08-24T16:33:30.062Z"
+    },
+    {
+      "path": ".claude/commands/sparc/post-deployment-monitoring-mode.md",
+      "size": 2641,
+      "hash": "f112e0fd1d1b9705e0e0a302329799ba4b80d7f3f666d4cb7910b6655309cdc7",
+      "lastModified": "2025-08-24T16:33:30.055Z"
+    },
+    {
+      "path": ".claude/commands/sparc/refinement-optimization-mode.md",
+      "size": 2603,
+      "hash": "aaef74635728ca063af5e738ae7247af38d3f5015617568735e2804682b3ba78",
+      "lastModified": "2025-08-24T16:33:30.057Z"
+    },
+    {
+      "path": ".claude/commands/sparc/security-review.md",
+      "size": 2266,
+      "hash": "c9029a10c045fbcb99c9f69ddc5d1b036197006c2f846823c4098976d092eece",
+      "lastModified": "2025-08-24T16:33:30.053Z"
+    },
+    {
+      "path": ".claude/commands/sparc/sparc.md",
+      "size": 3322,
+      "hash": "9e54e553a2ba6d8f249ed05ec1fbdcdb5e7affada7871063e062d988e9cd4abc",
+      "lastModified": "2025-08-24T16:33:30.063Z"
+    },
+    {
+      "path": ".claude/commands/sparc/spec-pseudocode.md",
+      "size": 2373,
+      "hash": "d60a693ba51f6a34fb9d12aadd8debebdb541e094b90388114603918e681459e",
+      "lastModified": "2025-08-24T16:33:30.061Z"
+    },
+    {
+      "path": ".claude/commands/sparc/supabase-admin.md",
+      "size": 12205,
+      "hash": "25b952c5e90d3c30d158d91e80e07954609eb7e080e8996d1a49c7756c7cfdb9",
+      "lastModified": "2025-08-24T16:33:30.060Z"
+    },
+    {
+      "path": ".claude/commands/sparc/tdd.md",
+      "size": 2216,
+      "hash": "e51c19369ecb17c237791fc96731349d1b8981b152d921f03fd6175a5ed1f49f",
+      "lastModified": "2025-08-24T16:33:30.051Z"
+    },
+    {
+      "path": ".claude/commands/sparc/tutorial.md",
+      "size": 2187,
+      "hash": "bf36c571c221a7a4aba29bacc48de4714edc4cab90e276543a30a546c78004ea",
+      "lastModified": "2025-08-24T16:33:30.059Z"
+    },
+    {
+      "path": ".claude/commands/sparc.md",
+      "size": 5125,
+      "hash": "19769d769c8ccc803206b5459b2ae5660e321a6564c42953d42f30e547e94339",
+      "lastModified": "2025-08-24T16:33:30.064Z"
+    },
+    {
+      "path": ".claude/commands/swarm/README.md",
+      "size": 412,
+      "hash": "65d2dd1c95927398fead599831008e721e4c00600f2a3d0a8c52d780daaf42e6",
+      "lastModified": "2025-08-24T16:33:15.558Z"
+    },
+    {
+      "path": ".claude/commands/swarm/swarm-analysis.md",
+      "size": 145,
+      "hash": "f319bd7170a4b589e95cc3360a3844d84f616a312884a569fe88ca731cf022c1",
+      "lastModified": "2025-08-24T16:33:15.564Z"
+    },
+    {
+      "path": ".claude/commands/swarm/swarm-background.md",
+      "size": 151,
+      "hash": "66661120d60f600f292ea87fc9e97abc0dc1382c8a8c1c43023ae38e343ef826",
+      "lastModified": "2025-08-24T16:33:15.563Z"
+    },
+    {
+      "path": ".claude/commands/swarm/swarm-init.md",
+      "size": 423,
+      "hash": "bbdd2112670b26286c5b7145e170f2fd94dcc97034210a6261da129cc5ac1835",
+      "lastModified": "2025-08-24T16:33:15.559Z"
+    },
+    {
+      "path": ".claude/commands/swarm/swarm-modes.md",
+      "size": 136,
+      "hash": "cc6aecbd0b41fd040a49217c23ae451e5faf3b036c0ce1922e7b4903a3df2bb8",
+      "lastModified": "2025-08-24T16:33:15.563Z"
+    },
+    {
+      "path": ".claude/commands/swarm/swarm-monitor.md",
+      "size": 142,
+      "hash": "be5df9a317d2260562a6333c34ec5d1dd1076ab834677d54ba89e7100d9324e9",
+      "lastModified": "2025-08-24T16:33:15.562Z"
+    },
+    {
+      "path": ".claude/commands/swarm/swarm-spawn.md",
+      "size": 385,
+      "hash": "b997c26f663c30968917b31dfa046be4e92e56881b56de54a6e91e366b181c5c",
+      "lastModified": "2025-08-24T16:33:15.560Z"
+    },
+    {
+      "path": ".claude/commands/swarm/swarm-status.md",
+      "size": 139,
+      "hash": "7ec08011bc03cb099c74791b60d5155589ff3a023ffe81b2b6f584dcade76023",
+      "lastModified": "2025-08-24T16:33:15.561Z"
+    },
+    {
+      "path": ".claude/commands/swarm/swarm-strategies.md",
+      "size": 151,
+      "hash": "04753ef25efbc6c96ce626cefae1e28bb5bdd37b74642c0aad19990ce6dbf0c3",
+      "lastModified": "2025-08-24T16:33:15.563Z"
+    },
+    {
+      "path": ".claude/commands/swarm/swarm.md",
+      "size": 692,
+      "hash": "eb3842a57a90d80df53f057f5d51ffb228309c60c9e246d075a780f385de4828",
+      "lastModified": "2025-08-24T16:33:15.559Z"
+    },
+    {
+      "path": ".claude/commands/training/README.md",
+      "size": 204,
+      "hash": "2c8126ace9178e3bff22f28f1645aae87483ed8d8d599b71217afec3f307bbaf",
+      "lastModified": "2025-08-24T16:33:15.551Z"
+    },
+    {
+      "path": ".claude/commands/training/model-update.md",
+      "size": 505,
+      "hash": "4f5173be4cfb85b46c4e464e6f37208fb6e78045aae52db148096af87c5e3597",
+      "lastModified": "2025-08-24T16:33:15.553Z"
+    },
+    {
+      "path": ".claude/commands/training/neural-train.md",
+      "size": 497,
+      "hash": "3fa49fcd1ea6970d3ce8ad13556aeec07ff62099f5a162957fc6e777e289957b",
+      "lastModified": "2025-08-24T16:33:15.552Z"
+    },
+    {
+      "path": ".claude/commands/training/pattern-learn.md",
+      "size": 502,
+      "hash": "2bc9784010fcc9be7204c3843bc52866e931f9c5093af3514765834306863670",
+      "lastModified": "2025-08-24T16:33:15.553Z"
+    },
+    {
+      "path": ".claude/commands/workflows/README.md",
+      "size": 224,
+      "hash": "56e0d34aaebbcd89b0c7ff8c9959c9de9364fc76f06b1d487bd9e3968141b197",
+      "lastModified": "2025-08-24T16:33:15.555Z"
+    },
+    {
+      "path": ".claude/commands/workflows/workflow-create.md",
+      "size": 491,
+      "hash": "baf1e6c2a2de02abafcec9bcadfdc52efa132803ded586c58f5d7ba86db43ed0",
+      "lastModified": "2025-08-24T16:33:15.556Z"
+    },
+    {
+      "path": ".claude/commands/workflows/workflow-execute.md",
+      "size": 505,
+      "hash": "fc86e679840c17d3d80d1d2f6a1d0e904f57e9eaf19b5c5aaf113093ffdf727b",
+      "lastModified": "2025-08-24T16:33:15.557Z"
+    },
+    {
+      "path": ".claude/commands/workflows/workflow-export.md",
+      "size": 508,
+      "hash": "2c1f1bb155498199e715ee37f65fd87ee0aa9c7d9f34f5d043f2a16249546630",
+      "lastModified": "2025-08-24T16:33:15.557Z"
+    },
+    {
+      "path": ".claude/helpers/github-safe.js",
+      "size": 2982,
+      "hash": "9cec5c9b7e0bc079027abb103062275a7b8fb91d081909fe249e6488b745b4a9",
+      "lastModified": "2025-08-24T16:33:15.583Z"
+    },
+    {
+      "path": ".claude/settings.json",
+      "size": 4258,
+      "hash": "4d4332d7b063b0877ed0fbcfca24c52a78f6c94c96def29abc5a9b8f4b8f72e7",
+      "lastModified": "2025-08-24T16:33:15.492Z"
+    },
+    {
+      "path": ".claude/settings.local.json",
+      "size": 672,
+      "hash": "83def0e2b36d72465185f653f6c8ba2792346490c4e31636c6d8f45d4da3fe83",
+      "lastModified": "2025-08-25T03:22:08.505Z"
+    },
+    {
+      "path": ".claude-flow/metrics/agent-metrics.json",
+      "size": 2,
+      "hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "lastModified": "2025-08-25T03:59:32.281Z"
+    },
+    {
+      "path": ".claude-flow/metrics/performance.json",
+      "size": 157,
+      "hash": "c7ee8a4d2cd98b9382f960ed195523704910434af8fc7a4e535698866c0b1d9f",
+      "lastModified": "2025-08-25T03:59:32.277Z"
+    },
+    {
+      "path": ".claude-flow/metrics/system-metrics.json",
+      "size": 432920,
+      "hash": "33a6bc54cd94c31a0fb34683faf8ee12d08db0c5f9bee539f79145cc167fe189",
+      "lastModified": "2025-08-25T03:59:09.932Z"
+    },
+    {
+      "path": ".claude-flow/metrics/task-metrics.json",
+      "size": 177,
+      "hash": "020c8b76c0a9e63e4d91337f4d183b5a903a2678b72c064e302c4c92ee13abbf",
+      "lastModified": "2025-08-25T03:59:32.280Z"
+    },
+    {
+      "path": ".hive-mind/README.md",
+      "size": 1441,
+      "hash": "e875ef9abe10cebdb1070eb7905417aa2afd4a823b6a1192563f233128c4a3a5",
+      "lastModified": "2025-08-24T16:33:15.692Z"
+    },
+    {
+      "path": ".hive-mind/config/queens.json",
+      "size": 1458,
+      "hash": "013dcb37368bc5218dd45051ef147fb0259f98d95a52fc6f02f8082e119a943c",
+      "lastModified": "2025-08-24T16:33:15.688Z"
+    },
+    {
+      "path": ".hive-mind/config/workers.json",
+      "size": 1762,
+      "hash": "78346e0c2136c307c2181d67a4bf2a427b4957d6a926a0d848e4dd041a19130d",
+      "lastModified": "2025-08-24T16:33:15.689Z"
+    },
+    {
+      "path": ".hive-mind/config.json",
+      "size": 2345,
+      "hash": "7ddb9dc681f210c5490df586889ff91080cd10df1d85c1fcb0bf8cd370520c51",
+      "lastModified": "2025-08-24T16:33:15.690Z"
+    },
+    {
+      "path": ".mcp.json",
+      "size": 339,
+      "hash": "e7e3e59489b7cadb2e6012ff2904e2594ff80170ce82f11ddc629a1738648a4d",
+      "lastModified": "2025-08-24T16:33:15.494Z"
+    },
+    {
+      "path": ".roo/README.md",
+      "size": 16495,
+      "hash": "7a6f56d91fec9996c4ba9bde13a955e8f6ee16b71c4bc36598bd256856ae561a",
+      "lastModified": "2025-08-24T16:33:29.960Z"
+    },
+    {
+      "path": ".roo/mcp-list.txt",
+      "size": 9054,
+      "hash": "4ce22437ab8e7c5eccd8fc92caaa0bd3653f43a3f748b474f9c65592bc4b5749",
+      "lastModified": "2025-08-24T16:33:29.959Z"
+    },
+    {
+      "path": ".roo/mcp.json",
+      "size": 777,
+      "hash": "791cadd8bb7cda1662ab9c53326d4beb428a9d99e5b6a3dec14b8039675c9654",
+      "lastModified": "2025-08-24T16:33:29.961Z"
+    },
+    {
+      "path": ".roo/mcp.md",
+      "size": 7158,
+      "hash": "4a72d453a963c9301f13ea964ac0ef1825a6469002ce348170e8c691ce8aee88",
+      "lastModified": "2025-08-24T16:33:29.960Z"
+    },
+    {
+      "path": ".roo/rules/apply_diff_guidelines.md",
+      "size": 1227,
+      "hash": "0ab67dd9b4e25e9d9c1db8fdaa69706982977964e0def420ac6f03d0a016010d",
+      "lastModified": "2025-08-24T16:33:29.972Z"
+    },
+    {
+      "path": ".roo/rules/file_operations_guidelines.md",
+      "size": 633,
+      "hash": "d86a56c2ce82e57e323a05214740490669c7aa7b0a126407cbc4486adfb0ad57",
+      "lastModified": "2025-08-24T16:33:29.971Z"
+    },
+    {
+      "path": ".roo/rules/insert_content.md",
+      "size": 1115,
+      "hash": "c957fc682d32c661d47af4322641377c3737ed3ea2bc39bd5e3dbac7650cf112",
+      "lastModified": "2025-08-24T16:33:29.972Z"
+    },
+    {
+      "path": ".roo/rules/rules.md",
+      "size": 10078,
+      "hash": "5a65ea87d3bad630a05f7832fae1045cb23980b8f59cbd313c1c7bbcc88809bd",
+      "lastModified": "2025-08-24T16:33:29.972Z"
+    },
+    {
+      "path": ".roo/rules/search_replace.md",
+      "size": 1062,
+      "hash": "e8122fbb12613a66d4b4d2a36c3bc7e543c0fb721d620ede467dcd9660db1ab2",
+      "lastModified": "2025-08-24T16:33:29.972Z"
+    },
+    {
+      "path": ".roo/rules/tool_guidelines_index.md",
+      "size": 1158,
+      "hash": "76ed1dc33c02647e290c95a12c7c0aee678d6c7a35e42e0dbbd384f6ec0c5078",
+      "lastModified": "2025-08-24T16:33:29.971Z"
+    },
+    {
+      "path": ".roo/rules-architect/rules.md",
+      "size": 5434,
+      "hash": "cbe93e11ecc8fbcd21899bfb8aacfb2ec1f214670f5429b13c3c627c9e5fc8b3",
+      "lastModified": "2025-08-24T16:33:29.971Z"
+    },
+    {
+      "path": ".roo/rules-ask/rules.md",
+      "size": 9857,
+      "hash": "38fa2d9a12f5ffaf9ef27b6cdfb8a278b995364e20457d6f2fa3cda137d87066",
+      "lastModified": "2025-08-24T16:33:29.973Z"
+    },
+    {
+      "path": ".roo/rules-code/apply_diff_guidelines.md",
+      "size": 1227,
+      "hash": "0ab67dd9b4e25e9d9c1db8fdaa69706982977964e0def420ac6f03d0a016010d",
+      "lastModified": "2025-08-24T16:33:29.974Z"
+    },
+    {
+      "path": ".roo/rules-code/code_editing.md",
+      "size": 869,
+      "hash": "00025663d592eeda26b12f3b36fea00e91545071791a193612ca6e52dd78b431",
+      "lastModified": "2025-08-24T16:33:29.974Z"
+    },
+    {
+      "path": ".roo/rules-code/file_operations_guidelines.md",
+      "size": 633,
+      "hash": "d86a56c2ce82e57e323a05214740490669c7aa7b0a126407cbc4486adfb0ad57",
+      "lastModified": "2025-08-24T16:33:29.974Z"
+    },
+    {
+      "path": ".roo/rules-code/insert_content.md",
+      "size": 1115,
+      "hash": "c957fc682d32c661d47af4322641377c3737ed3ea2bc39bd5e3dbac7650cf112",
+      "lastModified": "2025-08-24T16:33:29.974Z"
+    },
+    {
+      "path": ".roo/rules-code/rules.md",
+      "size": 12721,
+      "hash": "6ffc64f6e488457ac2ab00739d52ed3f6844a2470302fbb8a867d4277f7d31ea",
+      "lastModified": "2025-08-24T16:33:29.974Z"
+    },
+    {
+      "path": ".roo/rules-code/search_replace.md",
+      "size": 1062,
+      "hash": "e8122fbb12613a66d4b4d2a36c3bc7e543c0fb721d620ede467dcd9660db1ab2",
+      "lastModified": "2025-08-24T16:33:29.974Z"
+    },
+    {
+      "path": ".roo/rules-code/tool_guidelines_index.md",
+      "size": 1158,
+      "hash": "76ed1dc33c02647e290c95a12c7c0aee678d6c7a35e42e0dbbd384f6ec0c5078",
+      "lastModified": "2025-08-24T16:33:29.973Z"
+    },
+    {
+      "path": ".roo/rules-debug/rules.md",
+      "size": 9560,
+      "hash": "804bb7dc161ea81ac92623ef78c2365c18333d0ee389f7ed392f5a6826abd7fd",
+      "lastModified": "2025-08-24T16:33:29.969Z"
+    },
+    {
+      "path": ".roo/rules-devops/rules.md",
+      "size": 10137,
+      "hash": "b6fc44e87b90224c8a4aa1d91730317a23790e123d58dd065c2c6d96c8b72d02",
+      "lastModified": "2025-08-24T16:33:29.973Z"
+    },
+    {
+      "path": ".roo/rules-docs-writer/rules.md",
+      "size": 12114,
+      "hash": "6ceb43b1c5bd243cf43e8ed9d4547fe5e48f8ebccb965bc9f57603cdf8309c57",
+      "lastModified": "2025-08-24T16:33:29.970Z"
+    },
+    {
+      "path": ".roo/rules-integration/rules.md",
+      "size": 8978,
+      "hash": "9712842bb5a17a52ccc728547d6831edd615f6d60cd8bfafed349de2427484f3",
+      "lastModified": "2025-08-24T16:33:29.971Z"
+    },
+    {
+      "path": ".roo/rules-mcp/rules.md",
+      "size": 5897,
+      "hash": "c42b51cf332bbffac2afef28d29730d17ba9d90c8a1902a2329d6d8045a996a2",
+      "lastModified": "2025-08-24T16:33:29.975Z"
+    },
+    {
+      "path": ".roo/rules-post-deployment-monitoring-mode/rules.md",
+      "size": 8280,
+      "hash": "cc0babc7b92f88a301b5be2b7e2a3a00c30259001262ebec0010a8100556d182",
+      "lastModified": "2025-08-24T16:33:29.969Z"
+    },
+    {
+      "path": ".roo/rules-refinement-optimization-mode/rules.md",
+      "size": 10898,
+      "hash": "ee8a59f94bfe83b5a05dc9657ab058458f5aedad8298ffd58f44801debc63ba8",
+      "lastModified": "2025-08-24T16:33:29.969Z"
+    },
+    {
+      "path": ".roo/rules-security-review/rules.md",
+      "size": 10642,
+      "hash": "9517b65cf141738f0b709da1879505580a13f44295c19d0b70b4124a6f881f9f",
+      "lastModified": "2025-08-24T16:33:29.973Z"
+    },
+    {
+      "path": ".roo/rules-sparc/rules.md",
+      "size": 7694,
+      "hash": "b972c6b7fca6491f859ef06fdcde5cdcecb71614495c781f74601f5fafd8dfaa",
+      "lastModified": "2025-08-24T16:33:29.969Z"
+    },
+    {
+      "path": ".roo/rules-spec-pseudocode/rules.md",
+      "size": 5828,
+      "hash": "a8b99657230f168c124f97b1b920a82ea72a260b87497d79f17054da384423c3",
+      "lastModified": "2025-08-24T16:33:29.969Z"
+    },
+    {
+      "path": ".roo/rules-supabase-admin/rules.md",
+      "size": 5636,
+      "hash": "d6b5d7a155c7ce9b9e77cb00a62e67ae08ebc984ac41d13d5ff8969f450284b7",
+      "lastModified": "2025-08-24T16:33:29.970Z"
+    },
+    {
+      "path": ".roo/rules-tdd/rules.md",
+      "size": 7380,
+      "hash": "3a213d021328202861d68be8f51f8702564805ad0356ff13f71013c40d0c10b5",
+      "lastModified": "2025-08-24T16:33:29.970Z"
+    },
+    {
+      "path": ".roo/rules-tutorial/rules.md",
+      "size": 13280,
+      "hash": "8fac32cdc399c4bbc5e1a56464c7c7924a1187e1e1c3c1b2a5e98070c2232eef",
+      "lastModified": "2025-08-24T16:33:29.970Z"
+    },
+    {
+      "path": "CLAUDE.md",
+      "size": 11848,
+      "hash": "0c199176bd1683db4692d37125046fa436260e789c913db1c8226c034526fb5d",
+      "lastModified": "2025-08-24T16:33:15.480Z"
+    },
+    {
+      "path": "COMPREHENSIVE_SYSTEM_AUDIT_REPORT.md",
+      "size": 11517,
+      "hash": "06e0ddf93fbf99986359f19829f881a6c1cd53d6f6f4b2ecff76c9881dc41533",
+      "lastModified": "2025-08-25T03:28:24.259Z"
+    },
+    {
+      "path": "DEPLOYMENT_SUMMARY.md",
+      "size": 5360,
+      "hash": "110a0684c4b8612736e3b0872c45b621e80f4235e5bd7f4cc5a1404d021a42a2",
+      "lastModified": "2025-08-25T03:12:24.270Z"
+    },
+    {
+      "path": "README.md",
+      "size": 1078,
+      "hash": "82a2ff8a2f3a92335b13ea01ee34ffa267759c9949e0e8768e721f5ef8760712",
+      "lastModified": "2025-08-24T16:17:27.255Z"
+    },
+    {
+      "path": "ci/github-actions/deploy-cbdc-sandbox.yml",
+      "size": 16052,
+      "hash": "008bbef7a69b2f1560b488023db128a47aac29b112225a98c04c0b04872d1b42",
+      "lastModified": "2025-08-24T18:50:46.510Z"
+    },
+    {
+      "path": "ci/github-actions/deploy-devnet.yml",
+      "size": 5991,
+      "hash": "bd1285f8812dd309e8d39d028e5201890ceaf042b53fdb2f237a715342f95acc",
+      "lastModified": "2025-08-24T18:50:26.352Z"
+    },
+    {
+      "path": "ci/github-actions/deploy-testnet.yml",
+      "size": 9607,
+      "hash": "b3c76a22390469bd14f50bc17e0d386a8533362fbbb321ffc55ad04a57f621a2",
+      "lastModified": "2025-08-24T18:50:35.523Z"
+    },
+    {
+      "path": "claude-flow.config.json",
+      "size": 487,
+      "hash": "96bd81c210d55c6bd9bae45a35f558a859c8a8c9f24262cb2bf5a6e37ecd98a9",
+      "lastModified": "2025-08-24T16:33:15.495Z"
+    },
+    {
+      "path": "config/dev/hardhat.config.js",
+      "size": 1148,
+      "hash": "e5ba3df9759b9fce67fa3461cc84f1c9ec0217b74f36c1022eb609263881fd7c",
+      "lastModified": "2025-08-24T22:14:02.202Z"
+    },
+    {
+      "path": "config/environments/cbdc-sandbox.json",
+      "size": 8440,
+      "hash": "571a9583704d3119413d1a0b25a85e076c31bab2f12a938bad7bdd94894e3b93",
+      "lastModified": "2025-08-24T18:51:28.008Z"
+    },
+    {
+      "path": "config/environments/devnet.json",
+      "size": 1796,
+      "hash": "c500caea2a3e3991f73f86aa727910caa91368681604794e5fd1248f75adc0aa",
+      "lastModified": "2025-08-24T18:51:04.284Z"
+    },
+    {
+      "path": "config/environments/testnet.json",
+      "size": 3302,
+      "hash": "47083796785f0edcda372fbceeff57659dc83bf00ec7a58b78dd70166929bc11",
+      "lastModified": "2025-08-24T18:51:14.683Z"
+    },
+    {
+      "path": "contracts/AffiliateRouter.sol",
+      "size": 757,
+      "hash": "9e266ccb8c9bac248d19d46b57a3df1d128914f9135e60976d67556fd194c24e",
+      "lastModified": "2025-08-24T22:27:28.552Z"
+    },
+    {
+      "path": "contracts/CBDCBridge.sol",
+      "size": 8421,
+      "hash": "693e9870bb889712018c054474b544d417e6cc2d22c754e569d43913a2fd6a4b",
+      "lastModified": "2025-08-24T22:42:33.034Z"
+    },
+    {
+      "path": "contracts/CarbonVault.sol",
+      "size": 4929,
+      "hash": "e0b48bc23e8489fd3815e11351afe938762f9c4c3f781d0906678c5926c6b2d7",
+      "lastModified": "2025-08-24T22:27:28.557Z"
+    },
+    {
+      "path": "contracts/ESGIPProtection.sol",
+      "size": 18113,
+      "hash": "70305af5807b4ffd4693861de81a904cb167a629de0caed0475d5de00d7257af",
+      "lastModified": "2025-08-25T03:46:44.477Z"
+    },
+    {
+      "path": "contracts/ESGStablecoin.sol",
+      "size": 20507,
+      "hash": "917bbe7d8aa127f105288f58b72a97203c4e6247b5288f4ba120a5f9683dc849",
+      "lastModified": "2025-08-24T22:42:55.725Z"
+    },
+    {
+      "path": "contracts/IPFSHashRegistry.sol",
+      "size": 18884,
+      "hash": "80d319bdc4cbd266e4cd825b2efcf4496f58314d889beec2d79490afdcace063",
+      "lastModified": "2025-08-25T03:41:33.124Z"
+    },
+    {
+      "path": "contracts/MockCBDCValidator.sol",
+      "size": 1188,
+      "hash": "fa39255603150b9030435bb08860ef043813838d3a8920c1c7dd935f6f3f4da5",
+      "lastModified": "2025-08-24T22:30:21.259Z"
+    },
+    {
+      "path": "contracts/MockCarbonOracle.sol",
+      "size": 1037,
+      "hash": "309735369f407cb9384c2a8ba06dfabb88ecab24938c25eeb8d9c59118072f17",
+      "lastModified": "2025-08-24T22:30:03.493Z"
+    },
+    {
+      "path": "contracts/MockERC20.sol",
+      "size": 617,
+      "hash": "81b34397d808851845bd9032a3616ac4b50c3e4101df1c28c2d37276d324c610",
+      "lastModified": "2025-08-24T22:27:28.565Z"
+    },
+    {
+      "path": "contracts/MockPriceOracle.sol",
+      "size": 1115,
+      "hash": "fc200eca0f4118f7bf711196c0f4a64bfe18c99fa1fbdbb2758e16432d1f7acc",
+      "lastModified": "2025-08-24T22:29:16.511Z"
+    },
+    {
+      "path": "contracts/MockWaterOracle.sol",
+      "size": 1034,
+      "hash": "16f2ae8699c16cb2877ff9bf88f3559aaac1ba1ae79da6b5805573e60a12b1e8",
+      "lastModified": "2025-08-24T22:29:49.156Z"
+    },
+    {
+      "path": "contracts/NFTMarketplace.sol",
+      "size": 1769,
+      "hash": "bdd608b31cad681032b98e9d7ce7356e8908b699de6bfa7d3c1a10807d4ad815",
+      "lastModified": "2025-08-24T22:27:28.569Z"
+    },
+    {
+      "path": "contracts/NFTStaking.sol",
+      "size": 2371,
+      "hash": "1910340d49dd44732473aa9a58ac8a5c72fd8c667d2b39815b538d8e522665b9",
+      "lastModified": "2025-08-24T22:27:28.570Z"
+    },
+    {
+      "path": "contracts/PGPNotarization.sol",
+      "size": 20563,
+      "hash": "f8f151f17d5e900fc2a426ed519505875a8c0859fdec0509128b1fbe7400bf81",
+      "lastModified": "2025-08-25T03:45:40.832Z"
+    },
+    {
+      "path": "contracts/SovereigntyProof.sol",
+      "size": 23951,
+      "hash": "ac6b236b58ae58072dda056097ca921d1ca12e2ad0e23a4b1984338503216bb6",
+      "lastModified": "2025-08-25T03:46:12.710Z"
+    },
+    {
+      "path": "contracts/SubscriptionKeyNFT.sol",
+      "size": 17361,
+      "hash": "4604b1760ff405b3a13fef7608c8bbbd7356bc9c340c6eb303ff00c3659e3b8e",
+      "lastModified": "2025-08-25T03:40:58.172Z"
+    },
+    {
+      "path": "contracts/SubscriptionVault.sol",
+      "size": 1128,
+      "hash": "43ca16a3b884d4d6ce50b0b73569f789eec483d4e67afcf93341afe57a2d8ba0",
+      "lastModified": "2025-08-24T22:27:28.571Z"
+    },
+    {
+      "path": "contracts/UnykornESGProof.sol",
+      "size": 10728,
+      "hash": "d2e591931da18981ec87d17abf9f35c95f719486cacf7bb7f77aee89c869e036",
+      "lastModified": "2025-08-25T03:56:33.805Z"
+    },
+    {
+      "path": "contracts/UnykornSovereigntyRegistry.sol",
+      "size": 10921,
+      "hash": "6be48ba8640c67d6e10f38566baa8e734650a3e9fadfe7a81d4cdcd6d87fece8",
+      "lastModified": "2025-08-25T03:57:07.761Z"
+    },
+    {
+      "path": "contracts/VCHAN.sol",
+      "size": 747,
+      "hash": "938af07ebb3e67ffe18d3308570c5b4aed44bfc1bab1f2eec698d8297a414a18",
+      "lastModified": "2025-08-24T22:37:13.668Z"
+    },
+    {
+      "path": "contracts/VPOINT.sol",
+      "size": 566,
+      "hash": "a4516fa17c17479a11c4fc96f69ea16803be2bf8937f8ba2c2ae82919942348b",
+      "lastModified": "2025-08-24T22:38:07.591Z"
+    },
+    {
+      "path": "contracts/VTV.sol",
+      "size": 743,
+      "hash": "f84e671dd79e9bcb72f0712090c9bddcbb2cf805e1ab83c332cd4492d8254e95",
+      "lastModified": "2025-08-24T22:38:22.492Z"
+    },
+    {
+      "path": "contracts/VaultProofNFT.sol",
+      "size": 16305,
+      "hash": "9fdaae6a1fb566673e347e3ed25fcb85d0d5e4a654441660e4628868d11a6ee5",
+      "lastModified": "2025-08-25T03:40:31.251Z"
+    },
+    {
+      "path": "contracts/WaterVault.sol",
+      "size": 12000,
+      "hash": "5f33fbeb4cd77ce61dcfc9ff70c7a6e148a01438de3ea9c79e1fc57ebacd99e2",
+      "lastModified": "2025-08-24T22:43:19.171Z"
+    },
+    {
+      "path": "contracts/mocks/FlashLoanAttacker.sol",
+      "size": 1027,
+      "hash": "822547aab64e055d904271e7ead3234b5de1d6839acb775241bda8cfe1282f12",
+      "lastModified": "2025-08-24T22:38:37.881Z"
+    },
+    {
+      "path": "contracts/mocks/MaliciousReentrant.sol",
+      "size": 895,
+      "hash": "168760b6abd0cbdfb5f94b22189512f7e9b4db46044b46dd02e0bd91645a70bf",
+      "lastModified": "2025-08-24T22:38:23.638Z"
+    },
+    {
+      "path": "contracts/mocks/MockCBDCValidator.sol",
+      "size": 980,
+      "hash": "4bce873851e07df05550ad2a13a265cc03bc9935203259cea48b103029a36c3b",
+      "lastModified": "2025-08-24T22:37:52.596Z"
+    },
+    {
+      "path": "contracts/mocks/MockERC20.sol",
+      "size": 422,
+      "hash": "79737112b6255961a967ec15e667431ede4df02a43fb1ef942c246ec696cca34",
+      "lastModified": "2025-08-24T22:38:08.686Z"
+    },
+    {
+      "path": "contracts/mocks/MockOracle.sol",
+      "size": 1252,
+      "hash": "962c1bbc3a50e8edfaf7501c3dfd901c86b5765772f28b4f3438d9255bcbaeca",
+      "lastModified": "2025-08-24T22:37:32.642Z"
+    },
+    {
+      "path": "docker/cbdc-sandbox/docker-compose.yml",
+      "size": 10125,
+      "hash": "975c79cb21cf75ac2022fbc9a6d1f1eeea183ec73a95caa54d1baff09dc25e0a",
+      "lastModified": "2025-08-24T18:50:17.401Z"
+    },
+    {
+      "path": "docker/devnet/docker-compose.yml",
+      "size": 3325,
+      "hash": "f0cd25198d94c49d8667bd0e5f14ddcfbf490c665b1da6627dae36d6780c3647",
+      "lastModified": "2025-08-24T18:49:56.632Z"
+    },
+    {
+      "path": "docker/testnet/docker-compose.yml",
+      "size": 4981,
+      "hash": "da3a476cd2700bcc0222caca9d29d518f605b9c01ba15867bd47bb12ff985580",
+      "lastModified": "2025-08-24T18:50:08.259Z"
+    },
+    {
+      "path": "docs/Architecture_Decision_Records.md",
+      "size": 9907,
+      "hash": "fa3993bfb5439bcbba5c1f63ec7957251ef90bcdb62603b56779d2d9d3a8ea0b",
+      "lastModified": "2025-08-24T18:25:59.222Z"
+    },
+    {
+      "path": "docs/ESG_IP_Protection_Architecture.md",
+      "size": 19320,
+      "hash": "c46f3da4f8794d81943e648674354ba12fbf923962102678eaa0aab376b64bed",
+      "lastModified": "2025-08-25T03:48:58.248Z"
+    },
+    {
+      "path": "docs/ESG_SYSTEM_DOCUMENTATION.md",
+      "size": 2503,
+      "hash": "4da229ec07f1e6db5ecd8d7b70a751497a5bd9f720553ab4e90162b59e28b7ab",
+      "lastModified": "2025-08-25T03:08:58.352Z"
+    },
+    {
+      "path": "docs/ESG_System_Architecture.md",
+      "size": 14651,
+      "hash": "903fc2caceb84dc41115fbcf5e4755b36cb773389491b6e136ace64bfa90b825",
+      "lastModified": "2025-08-24T18:23:44.229Z"
+    },
+    {
+      "path": "docs/IP_PROTECTION_README.md",
+      "size": 19439,
+      "hash": "33cab11efc706a3905b803f3c10243860d5820821e079f5c5926c453fa785ad2",
+      "lastModified": "2025-08-25T03:54:18.605Z"
+    },
+    {
+      "path": "docs/README.md",
+      "size": 10443,
+      "hash": "07b82f3dd8907a69fe1a7679c16da4cee422b1d3e42e6563704c69d0eab496f5",
+      "lastModified": "2025-08-24T22:48:54.623Z"
+    },
+    {
+      "path": "docs/api/esg-openapi.yaml",
+      "size": 24163,
+      "hash": "7ccae9c9cff56bb1c168fee8c056afea0cf754f4d9abd916e3dbb63de3dd119b",
+      "lastModified": "2025-08-24T22:40:57.437Z"
+    },
+    {
+      "path": "docs/compliance/regulatory-framework.md",
+      "size": 26403,
+      "hash": "dd6af5edfd4c5790519a1c76f23723beccbfdfd161a19dddb50dacc74701eb83",
+      "lastModified": "2025-08-24T22:48:39.898Z"
+    },
+    {
+      "path": "docs/contracts/smart-contract-specs.md",
+      "size": 13640,
+      "hash": "ad3c621c988969d025bbe08e1d0e20a27834c9ed1d71181e6ebf62c04ab8b963",
+      "lastModified": "2025-08-24T22:41:06.990Z"
+    },
+    {
+      "path": "docs/deployment/infrastructure-guide.md",
+      "size": 18745,
+      "hash": "57b801341c8aaa0c63f4f50d9b8c2e9b9333e0991a07ee458f7d88d6756a5715",
+      "lastModified": "2025-08-24T22:41:19.875Z"
+    },
+    {
+      "path": "docs/examples/cbdc-integration-examples.md",
+      "size": 39281,
+      "hash": "9fd98a68f2686118f0ce33e962b5d2f0a2559a971ba0ca7c746447d8f753dbf6",
+      "lastModified": "2025-08-24T22:48:46.979Z"
+    },
+    {
+      "path": "docs/production-readiness-assessment.md",
+      "size": 13552,
+      "hash": "a146d37f118628ae847f1cd87490d89c9166748d141f3c7eff69d99de98d22c8",
+      "lastModified": "2025-08-25T03:23:49.616Z"
+    },
+    {
+      "path": "docs/user-guides/integration-guide.md",
+      "size": 26627,
+      "hash": "e7e007bfb5ebeb91d7fa3e9956de6fb2d15e54c550d264be7e72c7cdfa49b921",
+      "lastModified": "2025-08-24T22:41:45.376Z"
+    },
+    {
+      "path": "file_manifest.txt",
+      "size": 11269,
+      "hash": "393650c48192afcdcd0bfcfe5a7ab97499996c3cf954c02159712d9042855379",
+      "lastModified": "2025-08-25T03:55:23.349Z"
+    },
+    {
+      "path": "frontend/components/ESGDashboard.jsx",
+      "size": 2308,
+      "hash": "c55fafe385af8f83a2cbfe4ae47c421fa79656064f9c12a3cbe13a028de96917",
+      "lastModified": "2025-08-24T22:16:59.429Z"
+    },
+    {
+      "path": "frontend/hooks/useContract.js",
+      "size": 2118,
+      "hash": "3ff58bef8d55f34f55227ac24c3ee6c1a3c98e4b8da92a1fbfd81e259a8d9c81",
+      "lastModified": "2025-08-24T22:17:31.471Z"
+    },
+    {
+      "path": "hardhat.config.js",
+      "size": 817,
+      "hash": "cfa6ff665002af98bc164d0138526302d32c9cba04915e2bbd79fbf71f4b7d2d",
+      "lastModified": "2025-08-24T18:31:41.916Z"
+    },
+    {
+      "path": "memory/agents/README.md",
+      "size": 1213,
+      "hash": "335473df6bf15825ef19fe6122f2bf4141e0e3d7c7b3d19189db36b4d2d0d5ca",
+      "lastModified": "2025-08-24T16:33:15.592Z"
+    },
+    {
+      "path": "memory/claude-flow-data.json",
+      "size": 65,
+      "hash": "18c79b9983619cbf7cb32615d4719a0c76ae1ada779f25207b4e1717ae132c1e",
+      "lastModified": "2025-08-24T16:33:15.590Z"
+    },
+    {
+      "path": "memory/memory-store.json",
+      "size": 1865,
+      "hash": "7cd99ffe93c50f36c535c960c4469f5faba41157dc154c2559aa39cc43a02cb6",
+      "lastModified": "2025-08-24T18:30:31.173Z"
+    },
+    {
+      "path": "memory/sessions/README.md",
+      "size": 1284,
+      "hash": "55baf8b5d12e53bc5e81b4d5056404a69541ebd30df57a30165e6548e9722559",
+      "lastModified": "2025-08-24T16:33:15.593Z"
+    },
+    {
+      "path": "package-lock.json",
+      "size": 410794,
+      "hash": "da8eb199f077a46ba6c8fff8a8c13b2c35aaca1518ebe1cea1e6e9c8a3fed7ba",
+      "lastModified": "2025-08-24T22:25:00.477Z"
+    },
+    {
+      "path": "package.json",
+      "size": 1525,
+      "hash": "e849cfaed0f59f38acc7990a9fc6c041ba265e93392959cbf404edaff99b2665",
+      "lastModified": "2025-08-24T22:24:59.993Z"
+    },
+    {
+      "path": "scripts/deploy/deploy-esg.js",
+      "size": 2051,
+      "hash": "33e10e313a691d386201610d66b0cfad377c326b5112c2c2c100b358a83af407",
+      "lastModified": "2025-08-24T22:12:03.455Z"
+    },
+    {
+      "path": "scripts/deploy/deploy-ip-protection.js",
+      "size": 15636,
+      "hash": "caf4d2c6280e8309fc597f508f9ed79a99f1153307002ac1c5cc5e16232b8656",
+      "lastModified": "2025-08-25T03:50:34.898Z"
+    },
+    {
+      "path": "scripts/deploy.js",
+      "size": 768,
+      "hash": "b06a9b5dedc39a3a258df51d7e79c770ab2c132596e08648ea7ca819a37a653d",
+      "lastModified": "2025-08-24T16:17:27.268Z"
+    },
+    {
+      "path": "scripts/ip-protection/generate-manifest.js",
+      "size": 12384,
+      "hash": "b7bdfd3f2fbf13b27685974bdf0894fc8211e57d3445fe8814921b54c3464796",
+      "lastModified": "2025-08-25T03:57:44.740Z"
+    },
+    {
+      "path": "scripts/performance/gas-optimization.js",
+      "size": 3805,
+      "hash": "80546091995e374a31f3732d252902cf0985ff0be2a702ca6880d1533a415252",
+      "lastModified": "2025-08-25T03:10:28.924Z"
+    },
+    {
+      "path": "scripts/setup/init-dev.js",
+      "size": 1242,
+      "hash": "bb78464a8f7e84c45ba613030066db3fbae72234054d87cbcfdf7eb9d9397fb9",
+      "lastModified": "2025-08-24T22:16:36.416Z"
+    },
+    {
+      "path": "src/performance/BatchOperationsOptimizer.sol",
+      "size": 8338,
+      "hash": "a22448a9151ce69b54c1a117ed4f32ab5d6f1ce5b309ba2dd9ba112a600bef2d",
+      "lastModified": "2025-08-24T22:37:24.952Z"
+    },
+    {
+      "path": "src/performance/ContractOptimizer.js",
+      "size": 18300,
+      "hash": "880bb407a0e19b0fe9bd3250b62727656389ae3deee1b4913bff63d248d5bfc8",
+      "lastModified": "2025-08-24T22:35:07.868Z"
+    },
+    {
+      "path": "src/performance/GasAnalyzer.js",
+      "size": 21504,
+      "hash": "31bcb318abd0bf280a275811658b26995e24238250678cb4a39b6a774736b95b",
+      "lastModified": "2025-08-24T22:37:41.664Z"
+    },
+    {
+      "path": "src/performance/OptimizedESGStablecoin.sol",
+      "size": 15742,
+      "hash": "6d12a3a309ad3f2c74514d3be60c76db53d5ccb4d45bdb8f89e36e4204ce2f48",
+      "lastModified": "2025-08-24T22:41:30.207Z"
+    },
+    {
+      "path": "src/performance/ThroughputBenchmark.js",
+      "size": 22275,
+      "hash": "7192c930ebd0f6685e23e3f34cfde8aa78a529d17de39c01108b36ec59035791",
+      "lastModified": "2025-08-24T22:43:19.401Z"
+    },
+    {
+      "path": "test/esg/CBDCBridge.test.js",
+      "size": 28243,
+      "hash": "e104479470797922496338840cf26ed625e30a1fb60a0c2a998848f3c55ec928",
+      "lastModified": "2025-08-24T18:24:02.952Z"
+    },
+    {
+      "path": "test/esg/CarbonVault.test.js",
+      "size": 17363,
+      "hash": "f83a01b05feb604da46f37f7fdd8f0ff8724331bee15661d8e8afeba40d2ed7e",
+      "lastModified": "2025-08-24T17:55:32.278Z"
+    },
+    {
+      "path": "test/esg/ESGStablecoin.test.js",
+      "size": 24083,
+      "hash": "a173a315d8747ecfaa1a6eb33584d176875298dd03368cf58c13a764ca3176f9",
+      "lastModified": "2025-08-24T18:23:44.557Z"
+    },
+    {
+      "path": "test/esg/Gas.test.js",
+      "size": 24314,
+      "hash": "d2e38d7f18838bbcc3497028a97f80834e2544f3065b1f1f5573b22c312daedf",
+      "lastModified": "2025-08-24T18:27:01.847Z"
+    },
+    {
+      "path": "test/esg/Integration.test.js",
+      "size": 21534,
+      "hash": "cf5515d0d4d3ee856f58e32a7a49d713476f17d270b2d19fd60d9b40f2a6ab04",
+      "lastModified": "2025-08-24T18:26:47.204Z"
+    },
+    {
+      "path": "test/esg/WaterVault.test.js",
+      "size": 13307,
+      "hash": "58f4195738d13b53e3bfc1c9dda7bd5793c956ab98c6c258658055acff8508d3",
+      "lastModified": "2025-08-24T17:54:58.335Z"
+    },
+    {
+      "path": "test/integration/ESG_Integration.test.js",
+      "size": 6795,
+      "hash": "5713b4f01546f1669b51255b90e778325577fc1da06dc5287b372e740bdf5258",
+      "lastModified": "2025-08-25T03:09:48.595Z"
+    },
+    {
+      "path": "test/performance/ESGPerformanceTest.js",
+      "size": 20953,
+      "hash": "75e0e46fd24b085b81cd6a080c208b8cde84d7c2b5d70b777d2319c342495efa",
+      "lastModified": "2025-08-24T22:39:54.727Z"
+    },
+    {
+      "path": "tests/esg/ESGFailureModes.test.js",
+      "size": 25062,
+      "hash": "caec2781b84ccb53f7acac679ba3ad51c1d8ca9cf094456eb88bb76d161b33a0",
+      "lastModified": "2025-08-24T22:36:32.359Z"
+    },
+    {
+      "path": "tests/esg/ESGIntegrationComprehensive.test.js",
+      "size": 29358,
+      "hash": "21310b5d4370b52e1aed869e4ade8122c5f1f10494bea535de7f710169b35a04",
+      "lastModified": "2025-08-24T22:36:24.783Z"
+    },
+    {
+      "path": "tests/esg/ESGIntegrationQuick.test.js",
+      "size": 9264,
+      "hash": "fb82db4f758b0b4de8a8beeb8aa411211befa0d242a6683857e0f735332db22e",
+      "lastModified": "2025-08-24T22:43:35.940Z"
+    },
+    {
+      "path": "tests/esg/ESGOracleIntegration.test.js",
+      "size": 25257,
+      "hash": "997d502006a71d6278d07e07ff9c4a0b94b4e82105b1c4c2907c66c9f43da5e7",
+      "lastModified": "2025-08-24T22:40:27.494Z"
+    },
+    {
+      "path": "tests/esg/ESG_IP_Protection.test.js",
+      "size": 24022,
+      "hash": "17f58b9ffc97c71380b0363d7750d2ec3fdf44e123273a917cd5ba9b895e74ff",
+      "lastModified": "2025-08-25T03:52:24.099Z"
+    },
+    {
+      "path": "venv/lib/python3.13/site-packages/pip/_vendor/vendor.txt",
+      "size": 343,
+      "hash": "7dac2af13d5715f061b38ae38d29787d40373f1f4fda6b46d9ebeaa8fca16e17",
+      "lastModified": "2025-08-24T16:17:39.545Z"
+    },
+    {
+      "path": "venv/lib/python3.13/site-packages/pip-25.2.dist-info/entry_points.txt",
+      "size": 87,
+      "hash": "79e223bb37e77d1d8fae16e39dbcc553a327492ef49192f1c1a1c7aba33e6c3d",
+      "lastModified": "2025-08-24T16:17:39.841Z"
+    },
+    {
+      "path": "venv/lib/python3.13/site-packages/pip-25.2.dist-info/licenses/AUTHORS.txt",
+      "size": 11385,
+      "hash": "8a811f3069248b37137083ddbe387e918ca63b513d23d76fcc78cb525292e66f",
+      "lastModified": "2025-08-24T16:17:39.797Z"
+    },
+    {
+      "path": "venv/lib/python3.13/site-packages/pip-25.2.dist-info/licenses/LICENSE.txt",
+      "size": 1093,
+      "hash": "634300a669d49aeae65b12c6c48c924c51a4cdf3d1ff086dc3456dc8bcaa2104",
+      "lastModified": "2025-08-24T16:17:39.798Z"
+    },
+    {
+      "path": "venv/lib/python3.13/site-packages/pip-25.2.dist-info/licenses/src/pip/_vendor/cachecontrol/LICENSE.txt",
+      "size": 558,
+      "hash": "86eeee87be2a43f3ff1f56496f451f69243926f025fedbb033666c304c4c161b",
+      "lastModified": "2025-08-24T16:17:39.799Z"
+    },
+    {
+      "path": "venv/lib/python3.13/site-packages/pip-25.2.dist-info/licenses/src/pip/_vendor/dependency_groups/LICENSE.txt",
+      "size": 1099,
+      "hash": "1ab36e3e2a4ba8631625384f87e9e091db1faed034c5b23325b3239abf2cc525",
+      "lastModified": "2025-08-24T16:17:39.801Z"
+    },
+    {
+      "path": "venv/lib/python3.13/site-packages/pip-25.2.dist-info/licenses/src/pip/_vendor/distlib/LICENSE.txt",
+      "size": 14531,
+      "hash": "808e10c8a6ab8deb149ff9b3fb19f447a808094606d712a9ca57fead3552599d",
+      "lastModified": "2025-08-24T16:17:39.801Z"
+    },
+    {
+      "path": "venv/lib/python3.13/site-packages/pip-25.2.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md",
+      "size": 1541,
+      "hash": "a59f0b0ef3635874109a4461ca44ff7a70d50696e814767bfaf721d4c9b0db0f",
+      "lastModified": "2025-08-24T16:17:39.814Z"
+    },
+    {
+      "path": "venv/lib/python3.13/site-packages/pip-25.2.dist-info/licenses/src/pip/_vendor/urllib3/LICENSE.txt",
+      "size": 1115,
+      "hash": "c37bf186e27cf9dbe9619e55edfe3cea7b30091ceb3da63c7dacbe0e6d77907b",
+      "lastModified": "2025-08-24T16:17:39.839Z"
+    },
+    {
+      "path": "venv/lib/python3.13/site-packages/pip-25.2.dist-info/top_level.txt",
+      "size": 4,
+      "hash": "ceebae7b8927a3227e5303cf5e0f1f7b34bb542ad7250ac03fbcde36ec2f1508",
+      "lastModified": "2025-08-24T16:17:39.842Z"
+    }
+  ],
+  "hashes": {},
+  "totalSize": 2766295,
+  "repoHash": "01968e748a67d14ddca1959437af2528264f0fb5b14c7f87c81806c907a6f64a",
+  "auditHash": "06e0ddf93fbf99986359f19829f881a6c1cd53d6f6f4b2ecff76c9881dc41533",
+  "pgpSignature": "e24bd37cb9958edb9f7f0eb2122f01a57b5cd1040eca4dc3245288a55a85dc4c"
+}

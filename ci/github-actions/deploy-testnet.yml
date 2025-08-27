@@ -1,0 +1,321 @@
+name: Deploy to Testnet
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'contracts/**'
+      - 'src/**'
+      - 'docker/**'
+      - 'scripts/deploy/**'
+  workflow_dispatch:
+    inputs:
+      skip_tests:
+        description: 'Skip pre-deployment tests'
+        required: false
+        default: 'false'
+        type: boolean
+      force_deploy:
+        description: 'Force deployment'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  NETWORK: testnet
+  NODE_ENV: testing
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/esg-api
+
+jobs:
+  pre-deployment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      devnet_status: ${{ steps.devnet.outputs.status }}
+      should_deploy: ${{ steps.validation.outputs.should_deploy }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Pre-deployment hook
+        run: |
+          npx claude-flow@alpha hooks pre-task --description "testnet CI deployment"
+      
+      - name: Check devnet deployment status
+        id: devnet
+        run: |
+          if ./scripts/utils/check-deployment-status.sh devnet; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=failed" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Validate deployment prerequisites
+        id: validation
+        run: |
+          if [[ "${{ steps.devnet.outputs.status }}" == "success" ]]; then
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+            echo "❌ Devnet deployment validation failed"
+          fi
+      
+      - name: Generate version
+        id: version
+        run: |
+          VERSION=$(date +%Y%m%d)-${GITHUB_SHA:0:7}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+  security-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: pre-deployment
+    if: needs.pre-deployment.outputs.should_deploy == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run security audit
+        run: |
+          npm audit --audit-level=moderate
+          npx @openzeppelin/hardhat-upgrades validate --network hardhat
+      
+      - name: Run Slither analysis
+        uses: crytic/slither-action@v0.3.1
+        with:
+          target: contracts/
+          slither-args: --exclude-dependencies
+        continue-on-error: true
+      
+      - name: Run Mythril analysis
+        run: |
+          pip install mythril
+          myth analyze contracts/ --execution-timeout 300
+        continue-on-error: true
+
+  comprehensive-testing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    needs: pre-deployment
+    if: needs.pre-deployment.outputs.should_deploy == 'true' && github.event.inputs.skip_tests != 'true'
+    
+    strategy:
+      matrix:
+        test-suite: [unit, integration, contracts, performance]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run ${{ matrix.test-suite }} tests
+        run: |
+          case "${{ matrix.test-suite }}" in
+            unit)
+              npm run test:unit
+              ;;
+            integration)
+              npm run test:integration
+              ;;
+            contracts)
+              npm run test:contracts
+              ;;
+            performance)
+              npm run test:performance
+              ;;
+          esac
+        env:
+          CI: true
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-results-${{ matrix.test-suite }}
+          path: test-results/
+
+  build-and-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [pre-deployment, security-audit, comprehensive-testing]
+    if: needs.pre-deployment.outputs.should_deploy == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/base/Dockerfile.node
+          target: production
+          load: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:testnet-${{ needs.pre-deployment.outputs.version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:testnet-${{ needs.pre-deployment.outputs.version }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+      
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+      
+      - name: Push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/base/Dockerfile.node
+          target: production
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:testnet-latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:testnet-${{ needs.pre-deployment.outputs.version }}
+          platforms: linux/amd64,linux/arm64
+
+  deploy-testnet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: [pre-deployment, security-audit, comprehensive-testing, build-and-scan]
+    if: needs.pre-deployment.outputs.should_deploy == 'true' || github.event.inputs.force_deploy == 'true'
+    environment: testnet
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Setup deployment environment
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.TESTNET_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.TESTNET_HOST }} >> ~/.ssh/known_hosts
+      
+      - name: Deploy to testnet
+        env:
+          TESTNET_RPC_URL: ${{ secrets.TESTNET_RPC_URL }}
+          TESTNET_PRIVATE_KEY: ${{ secrets.TESTNET_PRIVATE_KEY }}
+          DATABASE_URL: ${{ secrets.TESTNET_DATABASE_URL }}
+          REDIS_URL: ${{ secrets.TESTNET_REDIS_URL }}
+          REDIS_PASSWORD: ${{ secrets.TESTNET_REDIS_PASSWORD }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          GRAFANA_ADMIN_PASSWORD: ${{ secrets.GRAFANA_ADMIN_PASSWORD }}
+          ELASTIC_PASSWORD: ${{ secrets.ELASTIC_PASSWORD }}
+          VAULT_ROOT_TOKEN: ${{ secrets.VAULT_ROOT_TOKEN }}
+        run: |
+          echo "🧪 Starting testnet deployment..."
+          ./scripts/deploy/deploy-testnet.sh
+      
+      - name: Wait for services to be ready
+        run: |
+          echo "⏳ Waiting for services to be ready..."
+          sleep 60
+      
+      - name: Run comprehensive health checks
+        run: |
+          ./scripts/monitoring/health-check.sh testnet --extended
+      
+      - name: Run post-deployment validation
+        run: |
+          npm run test:testnet:post-deploy
+      
+      - name: Update deployment status
+        if: always()
+        run: |
+          npx claude-flow@alpha hooks post-task --task-id "testnet-ci-deploy" --status "${{ job.status }}"
+      
+      - name: Store deployment info
+        run: |
+          npx claude-flow@alpha hooks post-edit --file "testnet-deployment" --memory-key "esg/deployment/testnet/ci-status"
+
+  post-deployment:
+    runs-on: ubuntu-latest
+    needs: [deploy-testnet]
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Generate deployment report
+        run: |
+          ./scripts/utils/generate-deployment-report.sh testnet
+      
+      - name: Notify deployment status
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ needs.deploy-testnet.result }}
+          channel: '#esg-deployments'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+        if: always()
+      
+      - name: Trigger CBDC sandbox readiness check
+        if: needs.deploy-testnet.result == 'success'
+        run: |
+          echo "🏦 Testnet deployment successful. CBDC sandbox ready for manual deployment."
+          gh workflow run deploy-cbdc-sandbox.yml --ref main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

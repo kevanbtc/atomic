@@ -1,0 +1,1079 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/WaterVault.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> WaterVault.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/63</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/96</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/20</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/88</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+&nbsp;
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
+&nbsp;
+/**
+ * @title WaterVault
+ * @dev Vault for water sustainability credits and ESG investments
+ * @notice Manages water conservation projects and tokenizes water credits
+ */
+contract WaterVault is ReentrancyGuard, Pausable, Ownable {
+    using Math for uint256;
+&nbsp;
+    // Water project structure
+    struct WaterProject {
+        uint256 id;
+        address projectOwner;
+        string projectName;
+        string location;
+        uint256 waterSaved; // Liters saved annually
+        uint256 creditRate; // Credits per liter saved
+        uint256 totalCredits;
+        uint256 availableCredits;
+        bool isActive;
+        uint256 verificationDate;
+        bytes32 certificationHash;
+    }
+&nbsp;
+    // Water credit token
+    struct WaterCredit {
+        uint256 projectId;
+        uint256 amount;
+        uint256 mintDate;
+        address owner;
+        bool isRetired;
+    }
+&nbsp;
+    // State variables
+    uint256 public nextProjectId = 1;
+    uint256 public nextCreditId = 1;
+    uint256 public totalWaterSaved;
+    uint256 public totalCreditsIssued;
+    
+    // Oracle settings
+    address public waterOracle;
+    uint256 public oracleUpdateFrequency = 24 hours;
+    uint256 public lastOracleUpdate;
+    
+    // Fee settings
+    uint256 public platformFeeRate = 250; // 2.5% in basis points
+    address public feeRecipient;
+    
+    // Mappings
+    mapping(uint256 =&gt; WaterProject) public projects;
+    mapping(uint256 =&gt; WaterCredit) public credits;
+    mapping(address =&gt; uint256[]) public userProjects;
+    mapping(address =&gt; uint256[]) public userCredits;
+    mapping(bytes32 =&gt; bool) public usedCertifications;
+&nbsp;
+    // Events
+    event ProjectRegistered(uint256 indexed projectId, address indexed owner, string projectName, uint256 waterSaved);
+    event ProjectVerified(uint256 indexed projectId, uint256 waterSaved, bytes32 certificationHash);
+    event CreditsIssued(uint256 indexed projectId, uint256 indexed creditId, uint256 amount, address indexed recipient);
+    event CreditsRetired(uint256 indexed creditId, address indexed retiree, uint256 amount);
+    event CreditsTransferred(uint256 indexed creditId, address indexed from, address indexed to);
+    event OracleUpdated(address indexed newOracle, uint256 timestamp);
+    event ProjectStatusChanged(uint256 indexed projectId, bool isActive);
+&nbsp;
+    // Modifiers
+<span class="fstat-no" title="function not covered" >    modifier onlyOracle() {</span>
+<span class="cstat-no" title="statement not covered" >        require(msg.sender == waterOracle, "WaterVault: Only oracle can call")</span>;
+        _;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    modifier validProject(uint256 projectId) {</span>
+<span class="cstat-no" title="statement not covered" >        require(projectId &gt; 0 &amp;&amp; projectId &lt; nextProjectId, "WaterVault: Invalid project ID")</span>;
+<span class="cstat-no" title="statement not covered" >        require(projects[projectId].isActive, "WaterVault: Project not active")</span>;
+        _;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    modifier validCredit(uint256 creditId) {</span>
+<span class="cstat-no" title="statement not covered" >        require(creditId &gt; 0 &amp;&amp; creditId &lt; nextCreditId, "WaterVault: Invalid credit ID")</span>;
+<span class="cstat-no" title="statement not covered" >        require(!credits[creditId].isRetired, "WaterVault: Credit already retired")</span>;
+        _;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    constructor(address _feeRecipient, address _waterOracle) Ownable(msg.sender) {</span>
+<span class="cstat-no" title="statement not covered" >        require(_feeRecipient != address(0), "WaterVault: Invalid fee recipient")</span>;
+        feeRecipient = _feeRecipient;
+        waterOracle = _waterOracle;
+        lastOracleUpdate = block.timestamp;
+    }
+&nbsp;
+    /**
+     * @dev Register a new water conservation project
+     * @param projectName Name of the water project
+     * @param location Geographic location of the project
+     * @param waterSaved Annual water savings in liters
+     * @param creditRate Credits per liter saved
+     */
+<span class="fstat-no" title="function not covered" >    function registerProject(</span>
+        string calldata projectName,
+        string calldata location,
+        uint256 waterSaved,
+        uint256 creditRate
+    ) external nonReentrant whenNotPaused returns (uint256) {
+<span class="cstat-no" title="statement not covered" >        require(bytes(projectName).length &gt; 0, "WaterVault: Project name required")</span>;
+<span class="cstat-no" title="statement not covered" >        require(bytes(location).length &gt; 0, "WaterVault: Location required")</span>;
+<span class="cstat-no" title="statement not covered" >        require(waterSaved &gt; 0, "WaterVault: Water saved must be positive")</span>;
+<span class="cstat-no" title="statement not covered" >        require(creditRate &gt; 0, "WaterVault: Credit rate must be positive")</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        uint256 projectId = nextProjectId++;</span>
+<span class="cstat-no" title="statement not covered" >        uint256 totalCredits = waterSaved * creditRate / 1e18;</span> // Scale factor
+&nbsp;
+        projects[projectId] = WaterProject({
+            id: projectId,
+            projectOwner: msg.sender,
+            projectName: projectName,
+            location: location,
+            waterSaved: waterSaved,
+            creditRate: creditRate,
+            totalCredits: totalCredits,
+            availableCredits: 0, // Credits available after verification
+            isActive: false, // Requires verification
+            verificationDate: 0,
+            certificationHash: bytes32(0)
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        userProjects[msg.sender].push(projectId)</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        emit ProjectRegistered(projectId, msg.sender, projectName, waterSaved);</span>
+<span class="cstat-no" title="statement not covered" >        return projectId;</span>
+    }
+&nbsp;
+    /**
+     * @dev Verify a water project and enable credit issuance
+     * @param projectId ID of the project to verify
+     * @param certificationHash Hash of the certification document
+     */
+<span class="fstat-no" title="function not covered" >    function verifyProject(uint256 projectId, bytes32 certificationHash) </span>
+        external 
+        onlyOracle 
+        nonReentrant 
+    {
+<span class="cstat-no" title="statement not covered" >        require(projectId &gt; 0 &amp;&amp; projectId &lt; nextProjectId, "WaterVault: Invalid project ID")</span>;
+<span class="cstat-no" title="statement not covered" >        require(certificationHash != bytes32(0), "WaterVault: Invalid certification hash")</span>;
+<span class="cstat-no" title="statement not covered" >        require(!usedCertifications[certificationHash], "WaterVault: Certification already used")</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        WaterProject storage project = projects[projectId];</span>
+<span class="cstat-no" title="statement not covered" >        require(!project.isActive, "WaterVault: Project already verified")</span>;
+&nbsp;
+        project.isActive = true;
+        project.verificationDate = block.timestamp;
+        project.certificationHash = certificationHash;
+        project.availableCredits = project.totalCredits;
+&nbsp;
+        usedCertifications[certificationHash] = true;
+        totalWaterSaved += project.waterSaved;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        emit ProjectVerified(projectId, project.waterSaved, certificationHash);</span>
+<span class="cstat-no" title="statement not covered" >        emit ProjectStatusChanged(projectId, true);</span>
+    }
+&nbsp;
+    /**
+     * @dev Issue water credits for a verified project
+     * @param projectId ID of the verified project
+     * @param amount Amount of credits to issue
+     * @param recipient Address to receive the credits
+     */
+<span class="fstat-no" title="function not covered" >    function issueCredits(uint256 projectId, uint256 amount, address recipient) </span>
+        external 
+        validProject(projectId) 
+        nonReentrant 
+        whenNotPaused 
+        returns (uint256) 
+    {
+<span class="cstat-no" title="statement not covered" >        require(recipient != address(0), "WaterVault: Invalid recipient")</span>;
+<span class="cstat-no" title="statement not covered" >        require(amount &gt; 0, "WaterVault: Amount must be positive")</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        WaterProject storage project = projects[projectId];</span>
+<span class="cstat-no" title="statement not covered" >        require(msg.sender == project.projectOwner, "WaterVault: Only project owner can issue")</span>;
+<span class="cstat-no" title="statement not covered" >        require(project.availableCredits &gt;= amount, "WaterVault: Insufficient available credits")</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        uint256 creditId = nextCreditId++;</span>
+        
+        credits[creditId] = WaterCredit({
+            projectId: projectId,
+            amount: amount,
+            mintDate: block.timestamp,
+            owner: recipient,
+            isRetired: false
+        });
+&nbsp;
+        project.availableCredits -= amount;
+        totalCreditsIssued += amount;
+<span class="cstat-no" title="statement not covered" >        userCredits[recipient].push(creditId)</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        emit CreditsIssued(projectId, creditId, amount, recipient);</span>
+<span class="cstat-no" title="statement not covered" >        return creditId;</span>
+    }
+&nbsp;
+    /**
+     * @dev Transfer water credits to another address
+     * @param creditId ID of the credit to transfer
+     * @param to Address to transfer to
+     */
+<span class="fstat-no" title="function not covered" >    function transferCredits(uint256 creditId, address to) </span>
+        external 
+        validCredit(creditId) 
+        nonReentrant 
+        whenNotPaused 
+    {
+<span class="cstat-no" title="statement not covered" >        require(to != address(0), "WaterVault: Invalid recipient")</span>;
+<span class="cstat-no" title="statement not covered" >        WaterCredit storage credit = credits[creditId];</span>
+<span class="cstat-no" title="statement not covered" >        require(msg.sender == credit.owner, "WaterVault: Only owner can transfer")</span>;
+&nbsp;
+        // Remove from current owner's credits
+<span class="cstat-no" title="statement not covered" >        _removeUserCredit(credit.owner, creditId)</span>;
+        
+        // Update ownership
+        credit.owner = to;
+<span class="cstat-no" title="statement not covered" >        userCredits[to].push(creditId)</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        emit CreditsTransferred(creditId, msg.sender, to);</span>
+    }
+&nbsp;
+    /**
+     * @dev Retire water credits (permanently remove from circulation)
+     * @param creditId ID of the credit to retire
+     */
+<span class="fstat-no" title="function not covered" >    function retireCredits(uint256 creditId) </span>
+        external 
+        validCredit(creditId) 
+        nonReentrant 
+        whenNotPaused 
+    {
+<span class="cstat-no" title="statement not covered" >        WaterCredit storage credit = credits[creditId];</span>
+<span class="cstat-no" title="statement not covered" >        require(msg.sender == credit.owner, "WaterVault: Only owner can retire")</span>;
+&nbsp;
+        credit.isRetired = true;
+<span class="cstat-no" title="statement not covered" >        _removeUserCredit(credit.owner, creditId)</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        emit CreditsRetired(creditId, msg.sender, credit.amount);</span>
+    }
+&nbsp;
+    /**
+     * @dev Update oracle address
+     * @param newOracle New oracle address
+     */
+<span class="fstat-no" title="function not covered" >    function updateOracle(address newOracle) external onlyOwner {</span>
+<span class="cstat-no" title="statement not covered" >        require(newOracle != address(0), "WaterVault: Invalid oracle address")</span>;
+        waterOracle = newOracle;
+        lastOracleUpdate = block.timestamp;
+<span class="cstat-no" title="statement not covered" >        emit OracleUpdated(newOracle, block.timestamp);</span>
+    }
+&nbsp;
+    /**
+     * @dev Update platform fee rate
+     * @param newFeeRate New fee rate in basis points
+     */
+<span class="fstat-no" title="function not covered" >    function updateFeeRate(uint256 newFeeRate) external onlyOwner {</span>
+<span class="cstat-no" title="statement not covered" >        require(newFeeRate &lt;= 1000, "WaterVault: Fee rate too high")</span>; // Max 10%
+        platformFeeRate = newFeeRate;
+    }
+&nbsp;
+    /**
+     * @dev Pause the contract
+     */
+<span class="fstat-no" title="function not covered" >    function pause() external onlyOwner {</span>
+<span class="cstat-no" title="statement not covered" >        _pause()</span>;
+    }
+&nbsp;
+    /**
+     * @dev Unpause the contract
+     */
+<span class="fstat-no" title="function not covered" >    function unpause() external onlyOwner {</span>
+<span class="cstat-no" title="statement not covered" >        _unpause()</span>;
+    }
+&nbsp;
+    /**
+     * @dev Deactivate a project (only owner or oracle)
+     * @param projectId ID of the project to deactivate
+     */
+<span class="fstat-no" title="function not covered" >    function deactivateProject(uint256 projectId) external {</span>
+<span class="cstat-no" title="statement not covered" >        require(projectId &gt; 0 &amp;&amp; projectId &lt; nextProjectId, "WaterVault: Invalid project ID")</span>;
+<span class="cstat-no" title="statement not covered" >        require(</span>
+            msg.sender == owner() || msg.sender == waterOracle || msg.sender == projects[projectId].projectOwner,
+            "WaterVault: Unauthorized"
+        );
+&nbsp;
+        projects[projectId].isActive = false;
+<span class="cstat-no" title="statement not covered" >        emit ProjectStatusChanged(projectId, false);</span>
+    }
+&nbsp;
+    // View functions
+<span class="fstat-no" title="function not covered" >    function getProject(uint256 projectId) external view returns (WaterProject memory) {</span>
+<span class="cstat-no" title="statement not covered" >        require(projectId &gt; 0 &amp;&amp; projectId &lt; nextProjectId, "WaterVault: Invalid project ID")</span>;
+<span class="cstat-no" title="statement not covered" >        return projects[projectId];</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getCredit(uint256 creditId) external view returns (WaterCredit memory) {</span>
+<span class="cstat-no" title="statement not covered" >        require(creditId &gt; 0 &amp;&amp; creditId &lt; nextCreditId, "WaterVault: Invalid credit ID")</span>;
+<span class="cstat-no" title="statement not covered" >        return credits[creditId];</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getUserProjects(address user) external view returns (uint256[] memory) {</span>
+<span class="cstat-no" title="statement not covered" >        return userProjects[user];</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getUserCredits(address user) external view returns (uint256[] memory) {</span>
+<span class="cstat-no" title="statement not covered" >        return userCredits[user];</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getActiveProjectsCount() external view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        uint256 count = 0;</span>
+<span class="cstat-no" title="statement not covered" >        for (uint256 i = 1; i &lt; nextProjectId; i++) {</span>
+<span class="cstat-no" title="statement not covered" >            if (projects[i].isActive) {</span>
+                count++;
+            }
+        }
+<span class="cstat-no" title="statement not covered" >        return count;</span>
+    }
+&nbsp;
+    // Internal functions
+<span class="fstat-no" title="function not covered" >    function _removeUserCredit(address user, uint256 creditId) internal {</span>
+<span class="cstat-no" title="statement not covered" >        uint256[] storage userCreditsList = userCredits[user];</span>
+<span class="cstat-no" title="statement not covered" >        for (uint256 i = 0; i &lt; userCreditsList.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >            if (userCreditsList[i] == creditId) {</span>
+                userCreditsList[i] = userCreditsList[userCreditsList.length - 1];
+<span class="cstat-no" title="statement not covered" >                userCreditsList.pop()</span>;
+                break;
+            }
+        }
+    }
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Aug 24 2025 14:39:07 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

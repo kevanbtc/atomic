@@ -1,0 +1,481 @@
+name: Deploy to CBDC Sandbox
+
+on:
+  workflow_dispatch:
+    inputs:
+      bypass_checks:
+        description: 'Bypass pre-deployment validation checks'
+        required: false
+        default: 'false'
+        type: boolean
+      emergency_deploy:
+        description: 'Emergency deployment (skip some safety checks)'
+        required: false
+        default: 'false'
+        type: boolean
+      rollback_version:
+        description: 'Version to rollback to (if needed)'
+        required: false
+        type: string
+
+env:
+  NETWORK: cbdc-sandbox
+  NODE_ENV: production
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/esg-api
+
+jobs:
+  pre-deployment-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      devnet_status: ${{ steps.devnet.outputs.status }}
+      testnet_status: ${{ steps.testnet.outputs.status }}
+      validation_passed: ${{ steps.validation.outputs.passed }}
+      backup_created: ${{ steps.backup.outputs.created }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Pre-deployment hook
+        run: |
+          npx claude-flow@alpha hooks pre-task --description "cbdc-sandbox CI deployment"
+      
+      - name: Check devnet deployment status
+        id: devnet
+        run: |
+          if ./scripts/utils/check-deployment-status.sh devnet; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=failed" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Check testnet deployment status
+        id: testnet
+        run: |
+          if ./scripts/utils/check-deployment-status.sh testnet; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=failed" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Create deployment backup
+        id: backup
+        run: |
+          if ./scripts/utils/backup-deployment.sh cbdc-sandbox; then
+            echo "created=true" >> $GITHUB_OUTPUT
+          else
+            echo "created=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Comprehensive validation
+        id: validation
+        run: |
+          VALIDATION_PASSED=true
+          
+          # Check prerequisite deployments
+          if [[ "${{ steps.devnet.outputs.status }}" != "success" && "${{ github.event.inputs.bypass_checks }}" != "true" ]]; then
+            echo "❌ Devnet deployment validation failed"
+            VALIDATION_PASSED=false
+          fi
+          
+          if [[ "${{ steps.testnet.outputs.status }}" != "success" && "${{ github.event.inputs.bypass_checks }}" != "true" ]]; then
+            echo "❌ Testnet deployment validation failed"
+            VALIDATION_PASSED=false
+          fi
+          
+          # Check backup creation
+          if [[ "${{ steps.backup.outputs.created }}" != "true" && "${{ github.event.inputs.emergency_deploy }}" != "true" ]]; then
+            echo "❌ Backup creation failed"
+            VALIDATION_PASSED=false
+          fi
+          
+          echo "passed=$VALIDATION_PASSED" >> $GITHUB_OUTPUT
+      
+      - name: Generate version
+        id: version
+        run: |
+          VERSION=$(date +%Y%m%d)-${GITHUB_SHA:0:7}-cbdc
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+  comprehensive-security-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: pre-deployment-validation
+    if: needs.pre-deployment-validation.outputs.validation_passed == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Install security tools
+        run: |
+          npm install -g @openzeppelin/hardhat-upgrades
+          pip install mythril slither-analyzer
+      
+      - name: Run comprehensive security audit
+        run: |
+          echo "🔒 Running comprehensive security audit..."
+          
+          # NPM audit with strict settings
+          npm audit --audit-level=moderate
+          
+          # Contract upgrades validation
+          npx @openzeppelin/hardhat-upgrades validate --network hardhat
+          
+          # Slither static analysis
+          slither contracts/ --exclude-dependencies --fail-pedantic
+          
+          # Mythril symbolic execution
+          myth analyze contracts/ --execution-timeout 600 --max-depth 10
+          
+          # Custom security checks
+          ./scripts/monitoring/security-audit.sh cbdc-sandbox --comprehensive
+      
+      - name: Generate security report
+        if: always()
+        run: |
+          ./scripts/utils/generate-security-report.sh > security-report.md
+      
+      - name: Upload security report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: security-audit-report
+          path: security-report.md
+
+  production-testing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    needs: pre-deployment-validation
+    if: needs.pre-deployment-validation.outputs.validation_passed == 'true'
+    
+    strategy:
+      matrix:
+        test-suite: [full, security, performance, load, integration]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run ${{ matrix.test-suite }} test suite
+        run: |
+          case "${{ matrix.test-suite }}" in
+            full)
+              npm run test:full
+              ;;
+            security)
+              npm run test:security
+              ;;
+            performance)
+              npm run test:performance
+              ;;
+            load)
+              npm run test:load
+              ;;
+            integration)
+              npm run test:integration:cbdc
+              ;;
+          esac
+        env:
+          CI: true
+          NODE_ENV: production
+          NETWORK: cbdc-sandbox
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: production-test-results-${{ matrix.test-suite }}
+          path: test-results/
+
+  build-production-image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    needs: [pre-deployment-validation, comprehensive-security-audit, production-testing]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Build production Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/base/Dockerfile.node
+          target: production
+          load: true
+          build-args: |
+            NODE_ENV=production
+            OPTIMIZE=true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:cbdc-${{ needs.pre-deployment-validation.outputs.version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
+      - name: Run comprehensive image scanning
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:cbdc-${{ needs.pre-deployment-validation.outputs.version }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+      
+      - name: Upload scan results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+      
+      - name: Sign Docker image
+        run: |
+          echo "${{ secrets.COSIGN_PRIVATE_KEY }}" | cosign sign --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:cbdc-${{ needs.pre-deployment-validation.outputs.version }}
+        env:
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+      
+      - name: Push production image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/base/Dockerfile.node
+          target: production
+          push: true
+          build-args: |
+            NODE_ENV=production
+            OPTIMIZE=true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:cbdc-latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:cbdc-${{ needs.pre-deployment-validation.outputs.version }}
+          platforms: linux/amd64,linux/arm64
+
+  deploy-cbdc-sandbox:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    needs: [pre-deployment-validation, comprehensive-security-audit, production-testing, build-production-image]
+    environment: cbdc-sandbox
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Setup secure deployment environment
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.CBDC_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.CBDC_HOST }} >> ~/.ssh/known_hosts
+          
+          # Setup Vault authentication
+          export VAULT_ADDR="${{ secrets.VAULT_ADDR }}"
+          export VAULT_TOKEN="${{ secrets.VAULT_TOKEN }}"
+      
+      - name: Deploy to CBDC sandbox
+        env:
+          CBDC_RPC_URL: ${{ secrets.CBDC_RPC_URL }}
+          CBDC_PRIVATE_KEY: ${{ secrets.CBDC_PRIVATE_KEY }}
+          CBDC_API_ENDPOINT: ${{ secrets.CBDC_API_ENDPOINT }}
+          CBDC_API_KEY: ${{ secrets.CBDC_API_KEY }}
+          POSTGRES_PASSWORD: ${{ secrets.CBDC_POSTGRES_PASSWORD }}
+          POSTGRES_REPLICATION_PASSWORD: ${{ secrets.CBDC_POSTGRES_REPLICATION_PASSWORD }}
+          REDIS_PASSWORD: ${{ secrets.CBDC_REDIS_PASSWORD }}
+          VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
+          VAULT_LOCAL_CONFIG: ${{ secrets.VAULT_LOCAL_CONFIG }}
+          IPFS_CLUSTER_SECRET: ${{ secrets.IPFS_CLUSTER_SECRET }}
+          GRAFANA_ADMIN_PASSWORD: ${{ secrets.CBDC_GRAFANA_ADMIN_PASSWORD }}
+          ELASTIC_PASSWORD: ${{ secrets.CBDC_ELASTIC_PASSWORD }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        run: |
+          echo "🏦 Starting CBDC sandbox deployment..."
+          ./scripts/deploy/deploy-cbdc-sandbox.sh
+      
+      - name: Extended service readiness check
+        run: |
+          echo "⏳ Extended waiting for production services..."
+          sleep 120
+      
+      - name: Comprehensive health validation
+        run: |
+          ./scripts/monitoring/health-check.sh cbdc-sandbox --comprehensive
+          
+          # Additional CBDC-specific validations
+          ./scripts/monitoring/validate-cbdc-integration.sh
+      
+      - name: Performance benchmarking
+        run: |
+          ./scripts/monitoring/performance-benchmark.sh cbdc-sandbox
+      
+      - name: Final security validation
+        run: |
+          ./scripts/monitoring/security-audit.sh cbdc-sandbox --final
+      
+      - name: Run production smoke tests
+        run: |
+          npm run test:cbdc-sandbox:smoke
+          npm run test:cbdc-sandbox:critical-path
+      
+      - name: Update deployment status
+        if: always()
+        run: |
+          npx claude-flow@alpha hooks post-task --task-id "cbdc-sandbox-ci-deploy" --status "${{ job.status }}"
+      
+      - name: Store deployment info
+        run: |
+          npx claude-flow@alpha hooks post-edit --file "cbdc-sandbox-deployment" --memory-key "esg/deployment/cbdc-sandbox/ci-status"
+
+  post-deployment-validation:
+    runs-on: ubuntu-latest
+    needs: [deploy-cbdc-sandbox]
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Generate comprehensive deployment report
+        run: |
+          ./scripts/utils/generate-deployment-report.sh cbdc-sandbox
+          ./scripts/utils/generate-pipeline-report.sh
+      
+      - name: Upload deployment artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: cbdc-deployment-report
+          path: |
+            deployment-report.md
+            pipeline-report.md
+      
+      - name: Send deployment notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ needs.deploy-cbdc-sandbox.result }}
+          channel: '#esg-production'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow
+          custom_payload: |
+            {
+              "text": "🏦 CBDC Sandbox Deployment ${{ needs.deploy-cbdc-sandbox.result == 'success' && 'Completed Successfully' || 'Failed' }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*ESG System CBDC Sandbox Deployment*\nStatus: ${{ needs.deploy-cbdc-sandbox.result == 'success' && '✅ Success' || '❌ Failed' }}\nVersion: ${{ needs.pre-deployment-validation.outputs.version }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+        if: always()
+      
+      - name: Create deployment issue on failure
+        if: needs.deploy-cbdc-sandbox.result == 'failure'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 CBDC Sandbox Deployment Failed',
+              body: `**Deployment failure detected**
+              
+              - **Workflow**: ${{ github.workflow }}
+              - **Run**: ${{ github.run_id }}
+              - **Commit**: ${{ github.sha }}
+              - **Actor**: ${{ github.actor }}
+              
+              Please investigate and resolve the deployment issues.`,
+              labels: ['deployment', 'production', 'urgent']
+            })
+
+  rollback-on-failure:
+    runs-on: ubuntu-latest
+    needs: [pre-deployment-validation, deploy-cbdc-sandbox]
+    if: needs.deploy-cbdc-sandbox.result == 'failure' && needs.pre-deployment-validation.outputs.backup_created == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Rollback deployment
+        run: |
+          echo "🔄 Rolling back CBDC sandbox deployment..."
+          ./scripts/utils/rollback-deployment.sh cbdc-sandbox ${{ github.event.inputs.rollback_version }}
+      
+      - name: Verify rollback
+        run: |
+          ./scripts/monitoring/health-check.sh cbdc-sandbox --post-rollback
+      
+      - name: Notify rollback completion
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          channel: '#esg-production'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+          custom_payload: |
+            {
+              "text": "🔄 CBDC Sandbox Rollback Completed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*ESG System CBDC Sandbox Rollback*\nRollback completed successfully due to deployment failure."
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}

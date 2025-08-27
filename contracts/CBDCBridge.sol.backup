@@ -1,0 +1,637 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+/**
+ * @title CBDCBridge
+ * @dev Bridge contract for Central Bank Digital Currency (CBDC) integration
+ * @notice Enables institutional integration between ESG ecosystem and CBDC systems
+ */
+contract CBDCBridge is ReentrancyGuard, Pausable, Ownable, AccessControl {
+    using Math for uint256;
+
+    // Role definitions
+    bytes32 public constant CENTRAL_BANK_ROLE = keccak256("CENTRAL_BANK_ROLE");
+    bytes32 public constant INSTITUTION_ROLE = keccak256("INSTITUTION_ROLE");
+    bytes32 public constant COMPLIANCE_ROLE = keccak256("COMPLIANCE_ROLE");
+    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
+
+    // Institution types
+    enum InstitutionType {
+        CentralBank,
+        CommercialBank,
+        InvestmentBank,
+        ESGFund,
+        Government,
+        International
+    }
+
+    // Transaction types
+    enum TransactionType {
+        ESGToLegacy,
+        LegacyToESG,
+        CrossChain,
+        Compliance,
+        Settlement
+    }
+
+    // Transaction status
+    enum TransactionStatus {
+        Pending,
+        Processing,
+        Completed,
+        Failed,
+        Cancelled,
+        Disputed
+    }
+
+    // Institution registration structure
+    struct Institution {
+        uint256 id;
+        address institutionAddress;
+        InstitutionType institutionType;
+        string name;
+        string country;
+        string regulatoryId;
+        uint256 dailyLimit;
+        uint256 monthlyLimit;
+        uint256 dailyUsed;
+        uint256 monthlyUsed;
+        uint256 lastDailyReset;
+        uint256 lastMonthlyReset;
+        bool isActive;
+        bool kycVerified;
+        uint256 registrationDate;
+        bytes32 complianceHash;
+    }
+
+    // Bridge transaction structure
+    struct BridgeTransaction {
+        uint256 id;
+        address fromAddress;
+        address toAddress;
+        uint256 fromChainId;
+        uint256 toChainId;
+        address tokenAddress;
+        uint256 amount;
+        TransactionType transactionType;
+        TransactionStatus status;
+        uint256 timestamp;
+        uint256 processingFee;
+        uint256 complianceFee;
+        string referenceId;
+        bytes32 proofHash;
+        address validator;
+        uint256 settlementDate;
+    }
+
+    // Compliance requirement structure
+    struct ComplianceRequirement {
+        uint256 minAmount;
+        uint256 maxAmount;
+        string[] requiredDocuments;
+        uint256 processingTime;
+        bool amlRequired;
+        bool kycRequired;
+        bool sanctionCheckRequired;
+        string jurisdiction;
+    }
+
+    // Settlement structure
+    struct Settlement {
+        uint256 id;
+        uint256[] transactionIds;
+        uint256 totalAmount;
+        address settlementToken;
+        uint256 settlementDate;
+        bool isCompleted;
+        bytes32 merkleRoot;
+        string bankReference;
+    }
+
+    // State variables
+    uint256 public nextInstitutionId = 1;
+    uint256 public nextTransactionId = 1;
+    uint256 public nextSettlementId = 1;
+    
+    // Configuration
+    uint256 public bridgeFeeRate = 10; // 0.1% in basis points
+    uint256 public complianceFeeRate = 5; // 0.05% in basis points
+    uint256 public minimumTransactionAmount = 1000 * 1e18; // $1000 minimum
+    uint256 public maximumTransactionAmount = 1000000 * 1e18; // $1M maximum
+    uint256 public settlementPeriod = 24 hours;
+    
+    // Oracle and external system addresses
+    address public complianceOracle;
+    address public priceOracle;
+    address public treasury;
+    address public emergencyMultisig;
+    
+    // ESG token addresses
+    address public esgStablecoin;
+    address public carbonVault;
+    address public waterVault;
+    
+    // Mappings
+    mapping(uint256 => Institution) public institutions;
+    mapping(address => uint256) public institutionByAddress;
+    mapping(uint256 => BridgeTransaction) public transactions;
+    mapping(address => uint256[]) public userTransactions;
+    mapping(string => ComplianceRequirement) public complianceRequirements;
+    mapping(uint256 => Settlement) public settlements;
+    mapping(bytes32 => bool) public processedProofs;
+    mapping(address => bool) public supportedTokens;
+    
+    // Statistics
+    uint256 public totalBridgeVolume;
+    uint256 public totalFeeCollected;
+    uint256 public totalInstitutions;
+    uint256 public totalTransactions;
+    
+    // Arrays for iteration
+    address[] public supportedTokenList;
+    uint256[] public activeInstitutions;
+
+    // Events
+    event InstitutionRegistered(uint256 indexed institutionId, address indexed institutionAddress, InstitutionType institutionType, string name);
+    event InstitutionVerified(uint256 indexed institutionId, address indexed verifier);
+    event BridgeTransactionInitiated(uint256 indexed transactionId, address indexed from, address indexed to, uint256 amount, TransactionType transactionType);
+    event BridgeTransactionCompleted(uint256 indexed transactionId, TransactionStatus status, bytes32 proofHash);
+    event ComplianceCheckCompleted(uint256 indexed transactionId, bool passed, string reason);
+    event SettlementCreated(uint256 indexed settlementId, uint256 totalAmount, uint256 transactionCount);
+    event SettlementCompleted(uint256 indexed settlementId, bytes32 merkleRoot, string bankReference);
+    event TokenSupported(address indexed token, string name);
+    event ComplianceRequirementUpdated(string indexed jurisdiction, uint256 minAmount, uint256 maxAmount);
+    event EmergencyWithdrawal(address indexed token, uint256 amount, address indexed recipient);
+
+    // Modifiers
+    modifier onlyInstitution() {
+        require(hasRole(INSTITUTION_ROLE, msg.sender), "CBDCBridge: Only registered institution");
+        require(institutions[institutionByAddress[msg.sender]].isActive, "CBDCBridge: Institution not active");
+        _;
+    }
+
+    modifier onlyCompliance() {
+        require(hasRole(COMPLIANCE_ROLE, msg.sender), "CBDCBridge: Only compliance role");
+        _;
+    }
+
+    modifier onlyCentralBank() {
+        require(hasRole(CENTRAL_BANK_ROLE, msg.sender), "CBDCBridge: Only central bank");
+        _;
+    }
+
+    modifier validTransaction(uint256 transactionId) {
+        require(transactionId > 0 && transactionId < nextTransactionId, "CBDCBridge: Invalid transaction ID");
+        require(transactions[transactionId].status == TransactionStatus.Pending, "CBDCBridge: Transaction not pending");
+        _;
+    }
+
+    modifier supportedToken(address token) {
+        require(supportedTokens[token], "CBDCBridge: Token not supported");
+        _;
+    }
+
+    constructor(
+        address _treasury,
+        address _emergencyMultisig,
+        address _complianceOracle,
+        address _priceOracle
+    ) Ownable(msg.sender) {
+        require(_treasury != address(0), "CBDCBridge: Invalid treasury");
+        require(_emergencyMultisig != address(0), "CBDCBridge: Invalid emergency multisig");
+        
+        treasury = _treasury;
+        emergencyMultisig = _emergencyMultisig;
+        complianceOracle = _complianceOracle;
+        priceOracle = _priceOracle;
+
+        // Grant roles to deployer
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(CENTRAL_BANK_ROLE, msg.sender);
+        _grantRole(COMPLIANCE_ROLE, msg.sender);
+        _grantRole(OPERATOR_ROLE, msg.sender);
+
+        // Set default compliance requirements
+        _setDefaultComplianceRequirements();
+    }
+
+    /**
+     * @dev Register a new financial institution
+     * @param institutionAddress Address of the institution
+     * @param institutionType Type of institution
+     * @param name Institution name
+     * @param country Country of operation
+     * @param regulatoryId Regulatory identifier
+     * @param dailyLimit Daily transaction limit
+     * @param monthlyLimit Monthly transaction limit
+     */
+    function registerInstitution(
+        address institutionAddress,
+        InstitutionType institutionType,
+        string calldata name,
+        string calldata country,
+        string calldata regulatoryId,
+        uint256 dailyLimit,
+        uint256 monthlyLimit
+    ) external onlyOwner returns (uint256) {
+        require(institutionAddress != address(0), "CBDCBridge: Invalid institution address");
+        require(bytes(name).length > 0, "CBDCBridge: Institution name required");
+        require(bytes(regulatoryId).length > 0, "CBDCBridge: Regulatory ID required");
+        require(institutionByAddress[institutionAddress] == 0, "CBDCBridge: Institution already registered");
+        require(dailyLimit > 0 && monthlyLimit > dailyLimit, "CBDCBridge: Invalid limits");
+
+        uint256 institutionId = nextInstitutionId++;
+        
+        institutions[institutionId] = Institution({
+            id: institutionId,
+            institutionAddress: institutionAddress,
+            institutionType: institutionType,
+            name: name,
+            country: country,
+            regulatoryId: regulatoryId,
+            dailyLimit: dailyLimit,
+            monthlyLimit: monthlyLimit,
+            dailyUsed: 0,
+            monthlyUsed: 0,
+            lastDailyReset: block.timestamp,
+            lastMonthlyReset: block.timestamp,
+            isActive: false, // Requires verification
+            kycVerified: false,
+            registrationDate: block.timestamp,
+            complianceHash: bytes32(0)
+        });
+
+        institutionByAddress[institutionAddress] = institutionId;
+        totalInstitutions++;
+
+        // Grant appropriate role
+        _grantRole(INSTITUTION_ROLE, institutionAddress);
+        
+        emit InstitutionRegistered(institutionId, institutionAddress, institutionType, name);
+        return institutionId;
+    }
+
+    /**
+     * @dev Verify an institution for active operations
+     * @param institutionId ID of the institution to verify
+     * @param complianceHash Hash of compliance documents
+     */
+    function verifyInstitution(uint256 institutionId, bytes32 complianceHash) 
+        external 
+        onlyCompliance 
+    {
+        require(institutionId > 0 && institutionId < nextInstitutionId, "CBDCBridge: Invalid institution ID");
+        require(complianceHash != bytes32(0), "CBDCBridge: Invalid compliance hash");
+
+        Institution storage institution = institutions[institutionId];
+        require(!institution.isActive, "CBDCBridge: Institution already verified");
+
+        institution.isActive = true;
+        institution.kycVerified = true;
+        institution.complianceHash = complianceHash;
+        
+        activeInstitutions.push(institutionId);
+
+        emit InstitutionVerified(institutionId, msg.sender);
+    }
+
+    /**
+     * @dev Initiate a bridge transaction
+     * @param toAddress Recipient address
+     * @param toChainId Target chain ID
+     * @param tokenAddress Token to bridge
+     * @param amount Amount to bridge
+     * @param transactionType Type of transaction
+     * @param reference Transaction reference
+     */
+    function initiateBridgeTransaction(
+        address toAddress,
+        uint256 toChainId,
+        address tokenAddress,
+        uint256 amount,
+        TransactionType transactionType,
+        string calldata referenceId
+    ) external onlyInstitution supportedToken(tokenAddress) nonReentrant whenNotPaused returns (uint256) {
+        require(toAddress != address(0), "CBDCBridge: Invalid recipient");
+        require(amount >= minimumTransactionAmount, "CBDCBridge: Amount below minimum");
+        require(amount <= maximumTransactionAmount, "CBDCBridge: Amount exceeds maximum");
+        require(bytes(referenceId).length > 0, "CBDCBridge: Reference required");
+
+        uint256 institutionId = institutionByAddress[msg.sender];
+        Institution storage institution = institutions[institutionId];
+
+        // Check and update limits
+        _checkAndUpdateLimits(institution, amount);
+
+        // Calculate fees
+        uint256 processingFee = (amount * bridgeFeeRate) / 10000;
+        uint256 complianceFee = (amount * complianceFeeRate) / 10000;
+        uint256 totalFee = processingFee + complianceFee;
+
+        // Transfer tokens and fees from institution
+        IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount + totalFee);
+
+        uint256 transactionId = nextTransactionId++;
+        
+        transactions[transactionId] = BridgeTransaction({
+            id: transactionId,
+            fromAddress: msg.sender,
+            toAddress: toAddress,
+            fromChainId: block.chainid,
+            toChainId: toChainId,
+            tokenAddress: tokenAddress,
+            amount: amount,
+            transactionType: transactionType,
+            status: TransactionStatus.Pending,
+            timestamp: block.timestamp,
+            processingFee: processingFee,
+            complianceFee: complianceFee,
+            referenceId: referenceId,
+            proofHash: bytes32(0),
+            validator: address(0),
+            settlementDate: 0
+        });
+
+        userTransactions[msg.sender].push(transactionId);
+        totalBridgeVolume += amount;
+        totalFeeCollected += totalFee;
+        totalTransactions++;
+
+        emit BridgeTransactionInitiated(transactionId, msg.sender, toAddress, amount, transactionType);
+        return transactionId;
+    }
+
+    /**
+     * @dev Process a pending bridge transaction
+     * @param transactionId ID of the transaction to process
+     * @param proofHash Cryptographic proof hash
+     */
+    function processBridgeTransaction(uint256 transactionId, bytes32 proofHash) 
+        external 
+        onlyCompliance 
+        validTransaction(transactionId) 
+        nonReentrant 
+    {
+        require(proofHash != bytes32(0), "CBDCBridge: Invalid proof hash");
+        require(!processedProofs[proofHash], "CBDCBridge: Proof already used");
+
+        BridgeTransaction storage transaction = transactions[transactionId];
+        
+        // Update transaction status
+        transaction.status = TransactionStatus.Processing;
+        transaction.proofHash = proofHash;
+        transaction.validator = msg.sender;
+        
+        processedProofs[proofHash] = true;
+
+        // Complete the transaction based on type
+        if (transaction.transactionType == TransactionType.ESGToLegacy) {
+            _processESGToLegacy(transaction);
+        } else if (transaction.transactionType == TransactionType.LegacyToESG) {
+            _processLegacyToESG(transaction);
+        } else if (transaction.transactionType == TransactionType.CrossChain) {
+            _processCrossChain(transaction);
+        }
+
+        transaction.status = TransactionStatus.Completed;
+        transaction.settlementDate = block.timestamp + settlementPeriod;
+
+        emit BridgeTransactionCompleted(transactionId, TransactionStatus.Completed, proofHash);
+    }
+
+    /**
+     * @dev Create a settlement batch for multiple transactions
+     * @param transactionIds Array of transaction IDs to settle
+     * @param settlementToken Token for settlement
+     * @param bankReference Bank reference for settlement
+     */
+    function createSettlement(
+        uint256[] calldata transactionIds,
+        address settlementToken,
+        string calldata bankReference
+    ) external onlyCentralBank supportedToken(settlementToken) nonReentrant returns (uint256) {
+        require(transactionIds.length > 0, "CBDCBridge: No transactions provided");
+        require(bytes(bankReference).length > 0, "CBDCBridge: Bank reference required");
+
+        uint256 totalAmount = 0;
+        for (uint256 i = 0; i < transactionIds.length; i++) {
+            uint256 txId = transactionIds[i];
+            require(transactions[txId].status == TransactionStatus.Completed, "CBDCBridge: Transaction not completed");
+            require(block.timestamp >= transactions[txId].settlementDate, "CBDCBridge: Settlement period not reached");
+            totalAmount += transactions[txId].amount;
+        }
+
+        uint256 settlementId = nextSettlementId++;
+        
+        settlements[settlementId] = Settlement({
+            id: settlementId,
+            transactionIds: transactionIds,
+            totalAmount: totalAmount,
+            settlementToken: settlementToken,
+            settlementDate: block.timestamp,
+            isCompleted: false,
+            merkleRoot: bytes32(0),
+            bankReference: bankReference
+        });
+
+        emit SettlementCreated(settlementId, totalAmount, transactionIds.length);
+        return settlementId;
+    }
+
+    /**
+     * @dev Complete a settlement batch
+     * @param settlementId ID of the settlement to complete
+     * @param merkleRoot Merkle root for transaction verification
+     */
+    function completeSettlement(uint256 settlementId, bytes32 merkleRoot) 
+        external 
+        onlyCentralBank 
+    {
+        require(settlementId > 0 && settlementId < nextSettlementId, "CBDCBridge: Invalid settlement ID");
+        require(merkleRoot != bytes32(0), "CBDCBridge: Invalid merkle root");
+
+        Settlement storage settlement = settlements[settlementId];
+        require(!settlement.isCompleted, "CBDCBridge: Settlement already completed");
+
+        settlement.isCompleted = true;
+        settlement.merkleRoot = merkleRoot;
+
+        // Transfer settlement amount to treasury
+        IERC20(settlement.settlementToken).transfer(treasury, settlement.totalAmount);
+
+        emit SettlementCompleted(settlementId, merkleRoot, settlement.bankReference);
+    }
+
+    /**
+     * @dev Add support for a new token
+     * @param token Token address to support
+     * @param name Token name for reference
+     */
+    function addSupportedToken(address token, string calldata name) external onlyOwner {
+        require(token != address(0), "CBDCBridge: Invalid token address");
+        require(!supportedTokens[token], "CBDCBridge: Token already supported");
+        require(bytes(name).length > 0, "CBDCBridge: Token name required");
+
+        supportedTokens[token] = true;
+        supportedTokenList.push(token);
+
+        emit TokenSupported(token, name);
+    }
+
+    /**
+     * @dev Set ESG token addresses
+     * @param _esgStablecoin ESG stablecoin address
+     * @param _carbonVault Carbon vault address
+     * @param _waterVault Water vault address
+     */
+    function setESGTokens(
+        address _esgStablecoin,
+        address _carbonVault,
+        address _waterVault
+    ) external onlyOwner {
+        require(_esgStablecoin != address(0), "CBDCBridge: Invalid ESG stablecoin");
+        require(_carbonVault != address(0), "CBDCBridge: Invalid carbon vault");
+        require(_waterVault != address(0), "CBDCBridge: Invalid water vault");
+
+        esgStablecoin = _esgStablecoin;
+        carbonVault = _carbonVault;
+        waterVault = _waterVault;
+
+        // Automatically add ESG tokens as supported
+        if (!supportedTokens[_esgStablecoin]) {
+            supportedTokens[_esgStablecoin] = true;
+            supportedTokenList.push(_esgStablecoin);
+        }
+    }
+
+    /**
+     * @dev Emergency withdrawal function
+     * @param token Token to withdraw
+     * @param amount Amount to withdraw
+     */
+    function emergencyWithdraw(address token, uint256 amount) external {
+        require(msg.sender == emergencyMultisig, "CBDCBridge: Only emergency multisig");
+        require(amount > 0, "CBDCBridge: Invalid amount");
+
+        if (token == address(0)) {
+            payable(emergencyMultisig).transfer(amount);
+        } else {
+            IERC20(token).transfer(emergencyMultisig, amount);
+        }
+
+        emit EmergencyWithdrawal(token, amount, emergencyMultisig);
+    }
+
+    /**
+     * @dev Pause the contract
+     */
+    function pause() external onlyOwner {
+        _pause();
+    }
+
+    /**
+     * @dev Unpause the contract
+     */
+    function unpause() external onlyOwner {
+        _unpause();
+    }
+
+    // View functions
+    function getInstitution(uint256 institutionId) external view returns (Institution memory) {
+        require(institutionId > 0 && institutionId < nextInstitutionId, "CBDCBridge: Invalid institution ID");
+        return institutions[institutionId];
+    }
+
+    function getTransaction(uint256 transactionId) external view returns (BridgeTransaction memory) {
+        require(transactionId > 0 && transactionId < nextTransactionId, "CBDCBridge: Invalid transaction ID");
+        return transactions[transactionId];
+    }
+
+    function getSettlement(uint256 settlementId) external view returns (Settlement memory) {
+        require(settlementId > 0 && settlementId < nextSettlementId, "CBDCBridge: Invalid settlement ID");
+        return settlements[settlementId];
+    }
+
+    function getUserTransactions(address user) external view returns (uint256[] memory) {
+        return userTransactions[user];
+    }
+
+    function getSupportedTokens() external view returns (address[] memory) {
+        return supportedTokenList;
+    }
+
+    function getActiveInstitutions() external view returns (uint256[] memory) {
+        return activeInstitutions;
+    }
+
+    function isTokenSupported(address token) external view returns (bool) {
+        return supportedTokens[token];
+    }
+
+    // Internal functions
+    function _checkAndUpdateLimits(Institution storage institution, uint256 amount) internal {
+        // Reset daily limit if needed
+        if (block.timestamp >= institution.lastDailyReset + 1 days) {
+            institution.dailyUsed = 0;
+            institution.lastDailyReset = block.timestamp;
+        }
+        
+        // Reset monthly limit if needed
+        if (block.timestamp >= institution.lastMonthlyReset + 30 days) {
+            institution.monthlyUsed = 0;
+            institution.lastMonthlyReset = block.timestamp;
+        }
+
+        require(institution.dailyUsed + amount <= institution.dailyLimit, "CBDCBridge: Daily limit exceeded");
+        require(institution.monthlyUsed + amount <= institution.monthlyLimit, "CBDCBridge: Monthly limit exceeded");
+
+        institution.dailyUsed += amount;
+        institution.monthlyUsed += amount;
+    }
+
+    function _processESGToLegacy(BridgeTransaction storage transaction) internal {
+        // Process ESG to legacy system conversion
+        // This would integrate with external CBDC systems
+    }
+
+    function _processLegacyToESG(BridgeTransaction storage transaction) internal {
+        // Process legacy to ESG system conversion
+        // This would mint ESG tokens based on legacy deposits
+    }
+
+    function _processCrossChain(BridgeTransaction storage transaction) internal {
+        // Process cross-chain transactions
+        // This would handle multi-chain ESG token movements
+    }
+
+    function _setDefaultComplianceRequirements() internal {
+        complianceRequirements["US"] = ComplianceRequirement({
+            minAmount: 10000 * 1e18,  // $10,000
+            maxAmount: 1000000 * 1e18, // $1,000,000
+            requiredDocuments: new string[](2),
+            processingTime: 24 hours,
+            amlRequired: true,
+            kycRequired: true,
+            sanctionCheckRequired: true,
+            jurisdiction: "US"
+        });
+        
+        complianceRequirements["EU"] = ComplianceRequirement({
+            minAmount: 5000 * 1e18,   // €5,000
+            maxAmount: 500000 * 1e18, // €500,000
+            requiredDocuments: new string[](3),
+            processingTime: 48 hours,
+            amlRequired: true,
+            kycRequired: true,
+            sanctionCheckRequired: true,
+            jurisdiction: "EU"
+        });
+    }
+}

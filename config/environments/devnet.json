@@ -1,0 +1,85 @@
+{
+  "network": "devnet",
+  "environment": "development",
+  "rpcUrl": "http://localhost:8545",
+  "chainId": 31337,
+  "blockTime": 2,
+  "gasPrice": "20000000000",
+  "gasLimit": "8000000",
+  "contracts": {
+    "deployTimeout": 60000,
+    "verificationEnabled": true,
+    "optimizerEnabled": false
+  },
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "esg_devnet",
+    "user": "postgres",
+    "maxConnections": 10,
+    "ssl": false
+  },
+  "redis": {
+    "host": "localhost",
+    "port": 6379,
+    "db": 0,
+    "keyPrefix": "esg:devnet:"
+  },
+  "ipfs": {
+    "host": "localhost",
+    "port": 5001,
+    "protocol": "http"
+  },
+  "monitoring": {
+    "grafana": {
+      "url": "http://localhost:3001",
+      "username": "admin",
+      "dashboardId": "devnet-esg"
+    },
+    "elasticsearch": {
+      "node": "http://localhost:9200",
+      "index": "esg-devnet-logs"
+    }
+  },
+  "features": {
+    "debugMode": true,
+    "hotReload": true,
+    "verboseLogging": true,
+    "mockData": true,
+    "testAccounts": true
+  },
+  "security": {
+    "cors": {
+      "origin": "*",
+      "credentials": true
+    },
+    "rateLimit": {
+      "windowMs": 60000,
+      "max": 1000
+    },
+    "encryption": false,
+    "https": false
+  },
+  "deployment": {
+    "autoMigration": true,
+    "seedData": true,
+    "backupBeforeDeploy": false,
+    "rollbackOnFailure": true
+  },
+  "tokens": {
+    "esgToken": {
+      "name": "ESG Token (Dev)",
+      "symbol": "ESGDEV",
+      "decimals": 18,
+      "initialSupply": "1000000000000000000000000000"
+    }
+  },
+  "testing": {
+    "accounts": [
+      "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+      "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d"
+    ],
+    "mockContracts": true,
+    "fastMode": true
+  }
+}

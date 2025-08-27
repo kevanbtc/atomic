@@ -1,0 +1,1 @@
+{"name": "deploy:ip-protection", "script": "hardhat run scripts/deploy/deploy-ip-protection.js --network localhost"}

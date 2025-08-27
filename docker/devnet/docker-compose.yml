@@ -1,0 +1,142 @@
+# ESG System - Devnet Docker Compose Configuration
+# Development environment with hot reloading and debugging
+
+version: '3.8'
+
+services:
+  # ESG API Service
+  esg-api:
+    build:
+      context: ../..
+      dockerfile: docker/base/Dockerfile.node
+      target: builder
+    container_name: esg-api-devnet
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - NETWORK=devnet
+      - PORT=3000
+      - DATABASE_URL=postgresql://postgres:dev_password@postgres:5432/esg_devnet
+      - REDIS_URL=redis://redis:6379
+      - BLOCKCHAIN_RPC=http://hardhat:8545
+      - LOG_LEVEL=debug
+    ports:
+      - "3000:3000"
+      - "9229:9229" # Debug port
+    volumes:
+      - ../../src:/app/src:ro
+      - ../../config:/app/config:ro
+      - node_modules:/app/node_modules
+    depends_on:
+      - postgres
+      - redis
+      - hardhat
+    networks:
+      - esg-devnet
+    command: ["npm", "run", "dev"]
+
+  # Hardhat Local Blockchain
+  hardhat:
+    build:
+      context: ../..
+      dockerfile: docker/base/Dockerfile.node
+    container_name: hardhat-devnet
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "8545:8545"
+    volumes:
+      - ../../contracts:/app/contracts:ro
+      - ../../scripts:/app/scripts:ro
+      - ../../hardhat.config.ts:/app/hardhat.config.ts:ro
+    networks:
+      - esg-devnet
+    command: ["npx", "hardhat", "node", "--hostname", "0.0.0.0"]
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres-devnet
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=esg_devnet
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_devnet:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d:ro
+    networks:
+      - esg-devnet
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: redis-devnet
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_devnet:/data
+    networks:
+      - esg-devnet
+    command: redis-server --appendonly yes
+
+  # IPFS Node
+  ipfs:
+    image: ipfs/go-ipfs:latest
+    container_name: ipfs-devnet
+    restart: unless-stopped
+    ports:
+      - "4001:4001"
+      - "5001:5001"
+      - "8080:8080"
+    volumes:
+      - ipfs_devnet:/data/ipfs
+    networks:
+      - esg-devnet
+
+  # Monitoring - Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana-devnet
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=devnet_admin
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana_devnet:/var/lib/grafana
+      - ../../config/monitoring/grafana:/etc/grafana/provisioning:ro
+    networks:
+      - esg-devnet
+
+  # Log Aggregation
+  elasticsearch:
+    image: elasticsearch:8.8.0
+    container_name: elasticsearch-devnet
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_devnet:/usr/share/elasticsearch/data
+    networks:
+      - esg-devnet
+
+volumes:
+  node_modules:
+  postgres_devnet:
+  redis_devnet:
+  ipfs_devnet:
+  grafana_devnet:
+  elasticsearch_devnet:
+
+networks:
+  esg-devnet:
+    driver: bridge
